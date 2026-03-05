@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mijn Keuken — Recepten & Verhalen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --groen:       #1a2e20;
+      --groen-mid:   #243b2a;
+      --groen-licht: #2e4d35;
+      --goud:        #c9a84c;
+      --goud-licht:  #e0c97a;
+      --hout:        #6b3f1f;
+      --crème:       #f5efe6;
+      --tekst:       #f0e8dc;
+      --tekst-zacht: #b8a898;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Jost', sans-serif; font-weight: 300; background-color: var(--groen); color: var(--tekst); min-height: 100vh; overflow-x: hidden; }
+    h1, h2, h3, h4 { font-family: 'Cormorant Garamond', serif; font-weight: 400; line-height: 1.15; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; font-family: 'Jost', sans-serif; }
+    .pagina { display: none; }
+    .pagina.actief { display: block; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 4rem; background: linear-gradient(to bottom, rgba(26,46,32,0.97) 60%, transparent); border-bottom: 1px solid rgba(201,168,76,0.15); }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; letter-spacing: 0.12em; color: var(--goud); cursor: pointer; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: 0.78rem; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase; color: var(--tekst-zacht); transition: color 0.3s; cursor: pointer; }
+    .nav-links a:hover, .nav-links a.actief-link { color: var(--goud); }
+    .nav-shop-badge { background: var(--goud); color: var(--groen); font-size: 0.58rem; padding: 0.12rem 0.4rem; margin-left: 0.3rem; vertical-align: middle; font-weight: 500; letter-spacing: 0.05em; }
+
+    /* GEDEELD */
+    .ornament { display: flex; align-items: center; gap: 1rem; color: var(--goud); margin: 1.5rem auto; width: fit-content; }
+    .ornament::before, .ornament::after { content: ''; display: block; width: 60px; height: 1px; background: var(--goud); opacity: 0.6; }
+    .knop-goud { display: inline-block; padding: 0.85rem 2.2rem; border: 1px solid var(--goud); color: var(--goud); font-size: 0.75rem; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; background: transparent; transition: all 0.35s; cursor: pointer; }
+    .knop-goud:hover { background: var(--goud); color: var(--groen); }
+    .knop-vol { display: inline-block; padding: 0.85rem 2.2rem; background: var(--goud); color: var(--groen); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; border: 1px solid var(--goud); transition: all 0.35s; cursor: pointer; }
+    .knop-vol:hover { background: transparent; color: var(--goud); }
+    .sectie-tag { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--goud); margin-bottom: 0.8rem; }
+    .sectie-titel { font-size: clamp(2rem, 4vw, 3rem); color: var(--crème); }
+    .sectie-header { text-align: center; margin-bottom: 3.5rem; }
+    .foto-placeholder { width: 100%; min-height: 220px; height: 100%; background: linear-gradient(135deg, var(--groen-mid) 0%, var(--hout) 50%, var(--groen-licht) 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: rgba(201,168,76,0.35); font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; letter-spacing: 0.15em; gap: 0.75rem; }
+
+    /* RECEPT KAART */
+    .recept-kaart { background: var(--groen); border: 1px solid rgba(201,168,76,0.1); cursor: pointer; transition: transform 0.3s, border-color 0.3s; overflow: hidden; }
+    .recept-kaart:hover { transform: translateY(-6px); border-color: rgba(201,168,76,0.4); }
+    .recept-kaart .foto-wrapper { height: 220px; overflow: hidden; }
+    .recept-kaart-info { padding: 1.5rem; }
+    .recept-categorie { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--goud); margin-bottom: 0.5rem; }
+    .recept-naam { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--crème); margin-bottom: 0.5rem; }
+    .recept-beschrijving { font-size: 0.85rem; color: var(--tekst-zacht); line-height: 1.7; margin-bottom: 1rem; }
+    .recept-meta { display: flex; gap: 1.5rem; font-size: 0.75rem; color: var(--tekst-zacht); }
+
+    /* FOOTER */
+    footer { padding: 3rem 4rem; background: rgba(0,0,0,0.35); border-top: 1px solid rgba(201,168,76,0.1); }
+    .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+    .footer-kolom h4 { font-family: 'Cormorant Garamond', serif; color: var(--crème); font-size: 1.1rem; margin-bottom: 1rem; }
+    .footer-kolom p, .footer-kolom a { font-size: 0.8rem; color: var(--tekst-zacht); line-height: 2.2; display: block; cursor: pointer; }
+    .footer-kolom a:hover { color: var(--goud); }
+    .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--goud); letter-spacing: 0.12em; margin-bottom: 0.5rem; }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 1.5rem; border-top: 1px solid rgba(201,168,76,0.1); flex-wrap: wrap; gap: 0.5rem; }
+    .footer-bottom span, .footer-bottom a { font-size: 0.75rem; color: var(--tekst-zacht); cursor: pointer; }
+    .footer-bottom a:hover { color: var(--goud); }
+
+    /* HOME */
+    .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; }
+    .hero-links { display: flex; flex-direction: column; justify-content: center; padding: 8rem 4rem 4rem; }
+    .hero-tag { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--goud); margin-bottom: 1.5rem; }
+    .hero-titel { font-size: clamp(3.5rem, 6vw, 5.5rem); font-weight: 300; color: var(--crème); margin-bottom: 1rem; line-height: 1.05; }
+    .hero-titel em { font-style: italic; color: var(--goud); }
+    .hero-ondertitel { font-size: 1rem; color: var(--tekst-zacht); line-height: 1.8; max-width: 400px; margin-bottom: 2.5rem; }
+    .hero-knoppen { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .featured { padding: 6rem 4rem; background: var(--groen-mid); }
+    .recepten-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .over-banner { display: grid; grid-template-columns: 1fr 1fr; min-height: 500px; }
+    .over-banner-tekst { padding: 5rem 4rem; background: var(--groen-licht); display: flex; flex-direction: column; justify-content: center; }
+    .over-banner-tekst p { font-size: 1rem; color: var(--tekst-zacht); line-height: 1.9; margin-bottom: 2rem; }
+    .categorieen { padding: 6rem 4rem; text-align: center; }
+    .categorie-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 3rem; }
+    .categorie-item { padding: 2rem 1rem; border: 1px solid rgba(201,168,76,0.2); cursor: pointer; transition: all 0.3s; background: var(--groen-mid); }
+    .categorie-item:hover { background: var(--groen-licht); border-color: var(--goud); }
+    .categorie-icoon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .categorie-naam { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--crème); margin-bottom: 0.3rem; }
+    .categorie-aantal { font-size: 0.75rem; color: var(--tekst-zacht); }
+    .sociaal { padding: 4rem; background: var(--groen-mid); border-top: 1px solid rgba(201,168,76,0.15); border-bottom: 1px solid rgba(201,168,76,0.15); display: flex; align-items: center; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+    .sociaal-label { font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--tekst-zacht); }
+    .sociaal-links { display: flex; gap: 1.5rem; }
+    .sociaal-link { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--tekst-zacht); border: 1px solid rgba(201,168,76,0.2); padding: 0.6rem 1.2rem; transition: all 0.3s; }
+    .sociaal-link:hover { color: var(--goud); border-color: var(--goud); }
+
+    /* RECEPTEN PAGINA */
+    .recepten-pagina { padding: 7rem 4rem 5rem; min-height: 100vh; }
+    .recepten-pagina-header { text-align: center; margin-bottom: 3rem; }
+    .recepten-pagina-header h1 { font-size: clamp(2.5rem, 5vw, 4rem); color: var(--crème); margin-bottom: 0.75rem; }
+    .recepten-pagina-header p { color: var(--tekst-zacht); }
+    .zoek-sectie { max-width: 600px; margin: 0 auto 2.5rem; }
+    .zoek-wrapper { display: flex; border: 1px solid rgba(201,168,76,0.3); overflow: hidden; }
+    .zoek-input { flex: 1; padding: 1rem 1.5rem; background: var(--groen-mid); border: none; color: var(--tekst); font-family: 'Jost', sans-serif; font-size: 0.9rem; outline: none; }
+    .zoek-input::placeholder { color: var(--tekst-zacht); }
+    .zoek-knop { padding: 1rem 1.5rem; background: var(--goud); border: none; color: var(--groen); }
+    .filter-tabs { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; margin-bottom: 3rem; }
+    .filter-tab { padding: 0.5rem 1.25rem; border: 1px solid rgba(201,168,76,0.2); background: transparent; color: var(--tekst-zacht); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; transition: all 0.25s; }
+    .filter-tab:hover, .filter-tab.actief { background: var(--goud); color: var(--groen); border-color: var(--goud); }
+    .recepten-groot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
+    .geen-resultaten { grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--tekst-zacht); font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; }
+
+    /* RECEPT DETAIL */
+    .recept-hero { height: 50vh; min-height: 350px; position: relative; display: flex; align-items: flex-end; }
+    .recept-hero .foto-placeholder { position: absolute; inset: 0; min-height: unset; height: 100%; }
+    .recept-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,46,32,0.95) 0%, transparent 60%); }
+    .recept-hero-inhoud { position: relative; z-index: 2; padding: 3rem 4rem; width: 100%; }
+    .recept-hero-categorie { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--goud); margin-bottom: 0.75rem; }
+    .recept-hero-titel { font-size: clamp(2.5rem, 5vw, 4.5rem); color: var(--crème); margin-bottom: 1rem; }
+    .recept-hero-meta { display: flex; gap: 2rem; font-size: 0.8rem; color: var(--tekst-zacht); }
+    .recept-inhoud { display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; padding: 4rem; max-width: 1200px; margin: 0 auto; }
+    .ingredienten-blok h3, .stappen-blok h3 { font-size: 1.5rem; color: var(--crème); margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(201,168,76,0.3); }
+    .ingredienten-list { list-style: none; }
+    .ingredienten-list li { padding: 0.7rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.9rem; color: var(--tekst-zacht); display: flex; justify-content: space-between; }
+    .ingredienten-list li .hoeveelheid { color: var(--goud); font-weight: 400; }
+    .stap { display: grid; grid-template-columns: 3rem 1fr; gap: 1.5rem; margin-bottom: 2.5rem; }
+    .stap-nummer { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: rgba(201,168,76,0.25); line-height: 1; font-style: italic; }
+    .stap-tekst { font-size: 0.95rem; color: var(--tekst-zacht); line-height: 1.85; padding-top: 0.3rem; }
+    .terug-knop { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--goud); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; background: none; border: none; padding: 1.5rem 4rem; transition: opacity 0.2s; }
+    .terug-knop:hover { opacity: 0.7; }
+
+    /* OVER MIJ */
+    .over-pagina { min-height: 100vh; padding-top: 5rem; }
+    .over-hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 70vh; }
+    .over-tekst-wrapper { padding: 6rem 5rem; background: var(--groen-mid); display: flex; flex-direction: column; justify-content: center; }
+    .over-naam { font-size: clamp(3rem, 5vw, 5rem); color: var(--crème); margin-bottom: 0.5rem; }
+    .over-subtitle { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.3rem; color: var(--goud); margin-bottom: 2rem; }
+    .over-tekst-wrapper p { font-size: 0.95rem; color: var(--tekst-zacht); line-height: 1.95; margin-bottom: 1.5rem; max-width: 480px; }
+    .over-waarden { padding: 6rem 4rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
+    .waarde-item .icoon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .waarde-item h4 { font-size: 1.3rem; color: var(--crème); margin-bottom: 0.75rem; }
+    .waarde-item p { font-size: 0.85rem; color: var(--tekst-zacht); line-height: 1.8; }
+    .over-sociaal { padding: 5rem 4rem; text-align: center; background: var(--groen-mid); }
+    .over-sociaal h2 { font-size: 2.5rem; color: var(--crème); margin-bottom: 0.75rem; }
+    .over-sociaal p { color: var(--tekst-zacht); font-size: 0.95rem; margin-bottom: 2.5rem; }
+    .sociaal-groot { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+    .sociaal-groot-link { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; padding: 2rem 2.5rem; border: 1px solid rgba(201,168,76,0.2); min-width: 150px; transition: all 0.3s; cursor: pointer; }
+    .sociaal-groot-link:hover { border-color: var(--goud); background: rgba(201,168,76,0.05); }
+    .sociaal-groot-link .icoon { font-size: 2rem; }
+    .sociaal-groot-link .platform { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--goud); }
+    .sociaal-groot-link .handle { font-size: 0.85rem; color: var(--tekst-zacht); }
+
+    /* SHOP */
+    .shop-pagina { min-height: 100vh; padding-top: 5rem; }
+    .shop-hero { padding: 5rem 4rem 4rem; text-align: center; background: linear-gradient(to bottom, var(--groen-mid), var(--groen)); position: relative; overflow: hidden; }
+    .shop-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 70%); }
+    .shop-hero-badge { display: inline-block; padding: 0.4rem 1.2rem; border: 1px solid var(--goud); color: var(--goud); font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .shop-hero h1 { font-size: clamp(3rem, 6vw, 5rem); color: var(--crème); margin-bottom: 1rem; }
+    .shop-hero h1 em { font-style: italic; color: var(--goud); }
+    .shop-hero > p { color: var(--tekst-zacht); font-size: 1.05rem; max-width: 560px; margin: 0 auto 3rem; line-height: 1.8; }
+    .wachtlijst-blok { max-width: 520px; margin: 0 auto; background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.25); padding: 2.5rem; position: relative; }
+    .wachtlijst-blok h3 { font-size: 1.4rem; color: var(--crème); margin-bottom: 0.5rem; }
+    .wachtlijst-blok p { font-size: 0.85rem; color: var(--tekst-zacht); margin-bottom: 1.5rem; line-height: 1.7; }
+    .email-rij { display: flex; border: 1px solid rgba(201,168,76,0.3); overflow: hidden; }
+    .email-input { flex: 1; padding: 0.9rem 1.2rem; background: var(--groen-mid); border: none; color: var(--tekst); font-family: 'Jost', sans-serif; font-size: 0.85rem; outline: none; }
+    .email-input::placeholder { color: var(--tekst-zacht); }
+    .email-verzend { padding: 0.9rem 1.5rem; background: var(--goud); border: none; color: var(--groen); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: background 0.3s; white-space: nowrap; }
+    .email-verzend:hover { background: var(--goud-licht); }
+    .email-ok { display: none; margin-top: 1rem; font-size: 0.85rem; color: var(--goud); text-align: center; }
+    .shop-categorieën { padding: 5rem 4rem; }
+    .shop-cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
+    .shop-cat-kaart { border: 1px solid rgba(201,168,76,0.15); overflow: hidden; transition: border-color 0.3s, transform 0.3s; background: var(--groen-mid); }
+    .shop-cat-kaart:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-5px); }
+    .shop-cat-foto { height: 240px; overflow: hidden; }
+    .shop-cat-foto .foto-placeholder { min-height: 240px; }
+    .shop-cat-info { padding: 2rem; }
+    .shop-cat-label { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--goud); margin-bottom: 0.6rem; }
+    .shop-cat-naam { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; color: var(--crème); margin-bottom: 0.75rem; }
+    .shop-cat-omschrijving { font-size: 0.85rem; color: var(--tekst-zacht); line-height: 1.75; margin-bottom: 1.5rem; }
+    .shop-cat-prijs { font-size: 0.8rem; color: var(--tekst-zacht); margin-bottom: 1.5rem; }
+    .shop-cat-prijs strong { color: var(--goud); font-weight: 400; font-size: 1rem; }
+    .binnenkort-tag { display: inline-block; padding: 0.35rem 0.9rem; border: 1px solid rgba(201,168,76,0.35); color: var(--tekst-zacht); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; }
+    .betaal-info { padding: 4rem; background: var(--groen-mid); border-top: 1px solid rgba(201,168,76,0.1); display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .betaal-info h2 { font-size: 2.2rem; color: var(--crème); margin-bottom: 1rem; }
+    .betaal-info p { font-size: 0.9rem; color: var(--tekst-zacht); line-height: 1.85; margin-bottom: 1rem; }
+    .betaal-methoden { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
+    .betaal-badge { padding: 0.5rem 1rem; border: 1px solid rgba(201,168,76,0.2); font-size: 0.75rem; color: var(--tekst-zacht); letter-spacing: 0.1em; }
+
+    /* LEGAL PAGINAS */
+    .legal-pagina { min-height: 100vh; padding: 8rem 4rem 5rem; max-width: 860px; margin: 0 auto; }
+    .legal-pagina h1 { font-size: clamp(2.5rem, 4vw, 3.5rem); color: var(--crème); margin-bottom: 0.5rem; }
+    .legal-datum { font-size: 0.8rem; color: var(--tekst-zacht); margin-bottom: 3rem; letter-spacing: 0.1em; }
+    .legal-sectie { margin-bottom: 2.5rem; }
+    .legal-sectie h2 { font-size: 1.5rem; color: var(--goud); margin-bottom: 1rem; font-family: 'Cormorant Garamond', serif; }
+    .legal-sectie p, .legal-sectie li { font-size: 0.9rem; color: var(--tekst-zacht); line-height: 1.9; margin-bottom: 0.75rem; }
+    .legal-sectie ul { padding-left: 1.5rem; }
+    .legal-sectie li { margin-bottom: 0.5rem; }
+    .legal-highlight { background: rgba(201,168,76,0.07); border-left: 2px solid var(--goud); padding: 1rem 1.5rem; margin: 1.5rem 0; }
+    .legal-highlight p { margin: 0; font-size: 0.88rem; color: var(--tekst-zacht); line-height: 1.7; }
+    .colofon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2rem; }
+    .colofon-blok { background: var(--groen-mid); padding: 2rem; border: 1px solid rgba(201,168,76,0.1); }
+    .colofon-blok h3 { font-size: 1.2rem; color: var(--crème); margin-bottom: 1rem; font-family: 'Cormorant Garamond', serif; }
+    .colofon-rij { display: flex; justify-content: space-between; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; }
+    .colofon-rij:last-child { border-bottom: none; }
+    .colofon-rij span:first-child { color: var(--tekst-zacht); flex-shrink: 0; }
+    .colofon-rij span:last-child { color: var(--crème); text-align: right; }
+
+    /* COOKIE BANNER */
+    #cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; z-index: 999; background: var(--groen-mid); border-top: 1px solid rgba(201,168,76,0.3); padding: 1.25rem 4rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+    .cookie-tekst { font-size: 0.82rem; color: var(--tekst-zacht); line-height: 1.7; flex: 1; min-width: 250px; }
+    .cookie-tekst a { color: var(--goud); text-decoration: underline; cursor: pointer; }
+    .cookie-knoppen { display: flex; gap: 1rem; flex-shrink: 0; }
+    .cookie-weiger { padding: 0.6rem 1.2rem; border: 1px solid rgba(201,168,76,0.3); background: transparent; color: var(--tekst-zacht); font-size: 0.75rem; letter-spacing: 0.1em; transition: all 0.25s; }
+    .cookie-weiger:hover { border-color: var(--goud); color: var(--goud); }
+    .cookie-akkoord { padding: 0.6rem 1.5rem; background: var(--goud); border: 1px solid var(--goud); color: var(--groen); font-size: 0.75rem; letter-spacing: 0.1em; font-weight: 500; }
+    .cookie-akkoord:hover { background: var(--goud-licht); }
+
+    /* RESPONSIEF */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 0.8rem; }
+      .nav-links a { font-size: 0.68rem; letter-spacing: 0.1em; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-links { padding: 7rem 2rem 3rem; }
+      .recepten-grid { grid-template-columns: 1fr; }
+      .over-banner { grid-template-columns: 1fr; }
+      .over-banner-tekst { padding: 3rem 2rem; }
+      .categorie-grid { grid-template-columns: repeat(2, 1fr); }
+      .sociaal { padding: 2.5rem 2rem; gap: 1.5rem; }
+      .recepten-pagina { padding: 7rem 1.5rem 3rem; }
+      .recept-inhoud { grid-template-columns: 1fr; padding: 2rem 1.5rem; }
+      .recept-hero-inhoud { padding: 2rem 1.5rem; }
+      .over-hero { grid-template-columns: 1fr; }
+      .over-tekst-wrapper { padding: 7rem 2rem 3rem; }
+      .over-waarden { grid-template-columns: 1fr; padding: 3rem 2rem; }
+      .over-sociaal { padding: 3rem 2rem; }
+      .shop-cat-grid { grid-template-columns: 1fr; }
+      .shop-hero { padding: 5rem 2rem 3rem; }
+      .shop-categorieën { padding: 3rem 1.5rem; }
+      .betaal-info { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
+      .legal-pagina { padding: 7rem 1.5rem 3rem; }
+      .colofon-grid { grid-template-columns: 1fr; }
+      footer { padding: 2rem 1.5rem; }
+      .footer-grid { grid-template-columns: 1fr; }
+      #cookie-banner { padding: 1rem 1.5rem; }
+      .featured { padding: 4rem 1.5rem; }
+      .categorieen { padding: 4rem 1.5rem; }
+    }
+    /* PORTIE REGELING */
+    .portie-regeling { display: flex; align-items: center; gap: 0.75rem; }
+    .portie-knop { width: 2rem; height: 2rem; border: 1px solid rgba(201,168,76,0.4); background: transparent; color: var(--goud); font-size: 1.1rem; line-height: 1; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+    .portie-knop:hover { background: var(--goud); color: var(--groen); }
+    .portie-midden { display: flex; flex-direction: column; align-items: center; min-width: 4rem; }
+    .portie-label { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--tekst-zacht); margin-bottom: 0.1rem; }
+    .portie-getal { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--goud); line-height: 1; }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+    .fade-in { animation: fadeUp 0.7s ease both; }
+    .fade-in-1 { animation-delay: 0.1s; }
+    .fade-in-2 { animation-delay: 0.25s; }
+    .fade-in-3 { animation-delay: 0.4s; }
+    .fade-in-4 { animation-delay: 0.55s; }
+  </style>
+</head>
+<body>
+
+<!-- COOKIE BANNER -->
+<div id="cookie-banner">
+  <div class="cookie-tekst">
+    🍪 Deze website gebruikt enkel functionele cookies die nodig zijn voor de werking van de site. Er worden geen tracking- of advertentiecookies geplaatst. Lees meer in onze <a onclick="toonPagina('privacy')">Privacyverklaring</a>.
+  </div>
+  <div class="cookie-knoppen">
+    <button class="cookie-weiger" onclick="sluitCookies()">Alleen noodzakelijk</button>
+    <button class="cookie-akkoord" onclick="sluitCookies()">Akkoord</button>
+  </div>
+</div>
+
+<!-- NAVIGATIE -->
+<nav>
+  <div class="nav-logo" onclick="toonPagina('home')">Mijn Keuken</div>
+  <ul class="nav-links">
+    <li><a onclick="toonPagina('home')" id="nav-home" class="actief-link">Home</a></li>
+    <li><a onclick="toonPagina('recepten')" id="nav-recepten">Recepten</a></li>
+    <li><a onclick="toonPagina('shop')" id="nav-shop">Shop <span class="nav-shop-badge">Binnenkort</span></a></li>
+    <li><a onclick="toonPagina('over')" id="nav-over">Over Mij</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ PAGINA: HOME ═══ -->
+<div id="pagina-home" class="pagina actief">
+  <section class="hero">
+    <div class="hero-links">
+      <p class="hero-tag fade-in fade-in-1">✦ Huiselijk &amp; Authentiek</p>
+      <h1 class="hero-titel fade-in fade-in-2">Koken<br>met <em>hart</em><br>en smaak</h1>
+      <p class="hero-ondertitel fade-in fade-in-3">Recepten die niet alleen smaken, maar ook een verhaal vertellen. Van eenvoudige doordeweekse maaltijden tot feestelijke gerechten — altijd met liefde gemaakt.</p>
+      <div class="hero-knoppen fade-in fade-in-4">
+        <button class="knop-vol" onclick="toonPagina('recepten')">Bekijk recepten</button>
+        <button class="knop-goud" onclick="toonPagina('over')">Over mij</button>
+      </div>
+    </div>
+    <div style="position:relative;overflow:hidden;">
+      <div class="foto-placeholder" style="min-height:100vh;">
+        <span style="font-size:3rem;opacity:0.3;">🍽</span>
+        <span style="font-size:0.8rem;opacity:0.4;letter-spacing:0.15em;">Voeg hier jouw foto toe</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="featured">
+    <div class="sectie-header">
+      <p class="sectie-tag">Verse picks</p>
+      <h2 class="sectie-titel">Nieuwste Recepten</h2>
+      <div class="ornament"><span>✦</span></div>
+    </div>
+    <div class="recepten-grid" id="home-recepten-grid"></div>
+    <div style="text-align:center;margin-top:3rem;">
+      <button class="knop-goud" onclick="toonPagina('recepten')">Alle recepten bekijken →</button>
+    </div>
+  </section>
+
+  <section class="over-banner">
+    <div>
+      <div class="foto-placeholder" style="min-height:500px;height:100%;">
+        <span style="font-size:3rem;opacity:0.3;">👩‍🍳</span>
+        <span style="font-size:0.8rem;opacity:0.4;letter-spacing:0.15em;">Jouw portretfoto</span>
+      </div>
+    </div>
+    <div class="over-banner-tekst">
+      <p class="sectie-tag">Het verhaal achter het eten</p>
+      <h2 class="sectie-titel">Welkom in<br><em style="font-style:italic;color:var(--goud)">mijn keuken</em></h2>
+      <p>Koken is voor mij meer dan ingrediënten samenvoegen — het is een manier van leven, van liefde geven, van herinneringen maken aan tafel.</p>
+      <p>Op deze plek deel ik mijn favoriete recepten, persoonlijke kooktips en de verhalen die erbij horen.</p>
+      <button class="knop-goud" onclick="toonPagina('over')" style="width:fit-content">Meer over mij →</button>
+    </div>
+  </section>
+
+  <section class="categorieen">
+    <p class="sectie-tag">Zoek naar jouw voorkeur</p>
+    <h2 class="sectie-titel">Recepten per categorie</h2>
+    <div class="categorie-grid">
+      <div class="categorie-item" onclick="filterEnGa('Pasta')"><div class="categorie-icoon">🍝</div><div class="categorie-naam">Pasta</div><div class="categorie-aantal">2 recepten</div></div>
+      <div class="categorie-item" onclick="filterEnGa('Comfort Food')"><div class="categorie-icoon">🥘</div><div class="categorie-naam">Comfort Food</div><div class="categorie-aantal">1 recept</div></div>
+      <div class="categorie-item" onclick="filterEnGa('Snel & Makkelijk')"><div class="categorie-icoon">⚡</div><div class="categorie-naam">Snel &amp; Makkelijk</div><div class="categorie-aantal">2 recepten</div></div>
+      <div class="categorie-item" onclick="filterEnGa('Vegetarisch')"><div class="categorie-icoon">🥦</div><div class="categorie-naam">Vegetarisch</div><div class="categorie-aantal">2 recepten</div></div>
+    </div>
+  </section>
+
+  <section style="padding:5rem 4rem;background:var(--groen-mid);text-align:center;border-top:1px solid rgba(201,168,76,0.1);">
+    <p class="sectie-tag">Binnenkort beschikbaar</p>
+    <h2 class="sectie-titel" style="margin-bottom:1rem;">De <em style="font-style:italic;color:var(--goud)">Mijn Keuken</em> Shop</h2>
+    <p style="color:var(--tekst-zacht);max-width:500px;margin:0 auto 2.5rem;line-height:1.8;font-size:0.95rem;">Mijn eerste kookboek, favoriete kookproducten en eigen merchandise — binnenkort te bestellen.</p>
+    <button class="knop-goud" onclick="toonPagina('shop')">Schrijf je in voor de wachtlijst →</button>
+  </section>
+
+  <section class="sociaal">
+    <span class="sociaal-label">Volg mij op</span>
+    <div class="sociaal-links">
+      <a href="#" class="sociaal-link">📸 Instagram</a>
+      <a href="#" class="sociaal-link">🎬 TikTok</a>
+      <a href="#" class="sociaal-link">▶️ YouTube</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-kolom"><div class="footer-logo">Mijn Keuken</div><p>Recepten, verhalen en een liefde voor lekker eten.</p></div>
+      <div class="footer-kolom"><h4>Navigatie</h4><a onclick="toonPagina('home')">Home</a><a onclick="toonPagina('recepten')">Recepten</a><a onclick="toonPagina('shop')">Shop</a><a onclick="toonPagina('over')">Over Mij</a></div>
+      <div class="footer-kolom"><h4>Juridisch</h4><a onclick="toonPagina('privacy')">Privacyverklaring</a><a onclick="toonPagina('colofon')">Colofon / Impressum</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Mijn Keuken — Gemaakt met liefde</span><div style="display:flex;gap:1.5rem;"><a onclick="toonPagina('privacy')">Privacy</a><a onclick="toonPagina('colofon')">Colofon</a></div></div>
+  </footer>
+</div>
+
+<!-- ═══ PAGINA: RECEPTEN ═══ -->
+<div id="pagina-recepten" class="pagina">
+  <div class="recepten-pagina">
+    <div class="recepten-pagina-header">
+      <p class="sectie-tag">De volledige collectie</p>
+      <h1>Alle Recepten</h1>
+      <p>Zoek, filter en ontdek — er is altijd iets lekkers voor vanavond</p>
+    </div>
+    <div class="zoek-sectie">
+      <div class="zoek-wrapper">
+        <input type="text" class="zoek-input" id="zoek-input" placeholder="Zoek op naam of ingrediënt..." oninput="filterRecepten()" />
+        <button class="zoek-knop">🔍</button>
+      </div>
+    </div>
+    <div class="filter-tabs">
+      <button class="filter-tab actief" onclick="setFilter('Alles',this)">Alles</button>
+      <button class="filter-tab" onclick="setFilter('Pasta',this)">Pasta</button>
+      <button class="filter-tab" onclick="setFilter('Comfort Food',this)">Comfort Food</button>
+      <button class="filter-tab" onclick="setFilter('Snel & Makkelijk',this)">Snel &amp; Makkelijk</button>
+      <button class="filter-tab" onclick="setFilter('Vegetarisch',this)">Vegetarisch</button>
+    </div>
+    <div class="recepten-groot-grid" id="recepten-groot-grid"></div>
+  </div>
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-kolom"><div class="footer-logo">Mijn Keuken</div></div>
+      <div class="footer-kolom"><h4>Navigatie</h4><a onclick="toonPagina('home')">Home</a><a onclick="toonPagina('recepten')">Recepten</a><a onclick="toonPagina('shop')">Shop</a><a onclick="toonPagina('over')">Over Mij</a></div>
+      <div class="footer-kolom"><h4>Juridisch</h4><a onclick="toonPagina('privacy')">Privacyverklaring</a><a onclick="toonPagina('colofon')">Colofon</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Mijn Keuken</span><div style="display:flex;gap:1.5rem;"><a onclick="toonPagina('privacy')">Privacy</a><a onclick="toonPagina('colofon')">Colofon</a></div></div>
+  </footer>
+</div>
+
+<!-- ═══ PAGINA: RECEPT DETAIL ═══ -->
+<div id="pagina-recept" class="pagina">
+  <button class="terug-knop" onclick="toonPagina('recepten')">← Terug naar recepten</button>
+  <div id="recept-detail-inhoud"></div>
+  <footer>
+    <div class="footer-bottom"><span>© 2025 Mijn Keuken</span><div style="display:flex;gap:1.5rem;"><a onclick="toonPagina('privacy')">Privacy</a><a onclick="toonPagina('colofon')">Colofon</a></div></div>
+  </footer>
+</div>
+
+<!-- ═══ PAGINA: SHOP ═══ -->
+<div id="pagina-shop" class="pagina">
+  <div class="shop-pagina">
+    <div class="shop-hero">
+      <div class="shop-hero-badge">✦ Binnenkort beschikbaar</div>
+      <h1>De <em>Mijn Keuken</em><br>Shop</h1>
+      <p>Mijn favoriete kookproducten, een kookboek vol authentieke recepten en handgepickte merchandise — alles op één plek, binnenkort te bestellen.</p>
+      <div class="wachtlijst-blok">
+        <h3>Wees er als eerste bij</h3>
+        <p>Schrijf je in en ontvang een seintje zodra de shop live gaat — plus een exclusieve korting voor early birds.</p>
+        <div class="email-rij">
+          <input type="email" class="email-input" id="shop-email" placeholder="jouw@emailadres.be" />
+          <button class="email-verzend" onclick="inschrijving(this,'email-ok')">Inschrijven</button>
+        </div>
+        <div class="email-ok" id="email-ok">✓ Gelukt! Je hoort van ons zodra de shop opent.</div>
+      </div>
+    </div>
+
+    <div class="shop-categorieën">
+      <div class="sectie-header">
+        <p class="sectie-tag">Wat komt er</p>
+        <h2 class="sectie-titel">In de shop</h2>
+        <div class="ornament"><span>✦</span></div>
+      </div>
+      <div class="shop-cat-grid">
+        <div class="shop-cat-kaart">
+          <div class="shop-cat-foto"><div class="foto-placeholder" style="min-height:240px;"><span style="font-size:3rem;opacity:0.35;">📖</span><span style="font-size:0.75rem;opacity:0.4;letter-spacing:0.1em;">Kookboek cover</span></div></div>
+          <div class="shop-cat-info">
+            <div class="shop-cat-label">Kookboek</div>
+            <div class="shop-cat-naam">Mijn Eerste Kookboek</div>
+            <div class="shop-cat-omschrijving">Al mijn favoriete recepten gebundeld in één mooi boek — met persoonlijke verhalen, kooktips en prachtige foto's. Beschikbaar als fysiek boek én digitale download.</div>
+            <div class="shop-cat-prijs">Vanaf <strong>€ 29,95</strong></div>
+            <span class="binnenkort-tag">Binnenkort beschikbaar</span>
+          </div>
+        </div>
+        <div class="shop-cat-kaart">
+          <div class="shop-cat-foto"><div class="foto-placeholder" style="min-height:240px;"><span style="font-size:3rem;opacity:0.35;">🍳</span><span style="font-size:0.75rem;opacity:0.4;letter-spacing:0.1em;">Product foto's</span></div></div>
+          <div class="shop-cat-info">
+            <div class="shop-cat-label">Kookproducten</div>
+            <div class="shop-cat-naam">Mijn Favoriete Tools</div>
+            <div class="shop-cat-omschrijving">De kookproducten en tools die ik zelf dagelijks gebruik — zorgvuldig geselecteerd op kwaliteit, duurzaamheid en gebruiksgemak.</div>
+            <div class="shop-cat-prijs">Verschillende prijzen</div>
+            <span class="binnenkort-tag">Binnenkort beschikbaar</span>
+          </div>
+        </div>
+        <div class="shop-cat-kaart">
+          <div class="shop-cat-foto"><div class="foto-placeholder" style="min-height:240px;"><span style="font-size:3rem;opacity:0.35;">👕</span><span style="font-size:0.75rem;opacity:0.4;letter-spacing:0.1em;">Merchandise foto's</span></div></div>
+          <div class="shop-cat-info">
+            <div class="shop-cat-label">Merchandise</div>
+            <div class="shop-cat-naam">Mijn Keuken × Jij</div>
+            <div class="shop-cat-omschrijving">Schorten, bekers, theedoeken en meer — allemaal met het Mijn Keuken ontwerp. Perfect cadeau voor de kookliefhebber in je leven.</div>
+            <div class="shop-cat-prijs">Vanaf <strong>€ 14,95</strong></div>
+            <span class="binnenkort-tag">Binnenkort beschikbaar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="betaal-info">
+      <div>
+        <p class="sectie-tag">Veilig & eenvoudig betalen</p>
+        <h2>Betalen via Mollie</h2>
+        <p>Wanneer de shop live gaat, verwerk ik alle betalingen via <strong style="color:var(--crème)">Mollie</strong> — een Belgisch/Nederlands betaalplatform dat Bancontact, kredietkaart en meer ondersteunt.</p>
+        <p>Jij kiest hoe je betaalt. Veilig, snel en vertrouwd.</p>
+        <div class="betaal-methoden">
+          <span class="betaal-badge">💳 Bancontact</span>
+          <span class="betaal-badge">💳 Kredietkaart</span>
+          <span class="betaal-badge">🏦 Overschrijving</span>
+          <span class="betaal-badge">📱 iDEAL</span>
+          <span class="betaal-badge">🔒 Veilig & versleuteld</span>
+        </div>
+      </div>
+      <div style="background:var(--groen);padding:2.5rem;border:1px solid rgba(201,168,76,0.15);">
+        <p class="sectie-tag">Mis de opening niet</p>
+        <h3 style="font-size:1.6rem;color:var(--crème);margin-bottom:1rem;">Schrijf je in</h3>
+        <p style="font-size:0.85rem;color:var(--tekst-zacht);line-height:1.8;margin-bottom:1.5rem;">Ontvang als eerste een seintje en een exclusieve early-bird korting.</p>
+        <div class="email-rij">
+          <input type="email" class="email-input" placeholder="jouw@emailadres.be" />
+          <button class="email-verzend" onclick="inschrijving(this, null)">→</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-kolom"><div class="footer-logo">Mijn Keuken</div></div>
+      <div class="footer-kolom"><h4>Navigatie</h4><a onclick="toonPagina('home')">Home</a><a onclick="toonPagina('recepten')">Recepten</a><a onclick="toonPagina('shop')">Shop</a><a onclick="toonPagina('over')">Over Mij</a></div>
+      <div class="footer-kolom"><h4>Juridisch</h4><a onclick="toonPagina('privacy')">Privacyverklaring</a><a onclick="toonPagina('colofon')">Colofon</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Mijn Keuken</span><div style="display:flex;gap:1.5rem;"><a onclick="toonPagina('privacy')">Privacy</a><a onclick="toonPagina('colofon')">Colofon</a></div></div>
+  </footer>
+</div>
+
+<!-- ═══ PAGINA: OVER MIJ ═══ -->
+<div id="pagina-over" class="pagina">
+  <div class="over-pagina">
+    <div class="over-hero">
+      <div>
+        <div class="foto-placeholder" style="min-height:70vh;height:100%;">
+          <span style="font-size:4rem;opacity:0.3;">👩‍🍳</span>
+          <span style="font-size:0.8rem;opacity:0.4;letter-spacing:0.15em;">Jouw foto hier</span>
+        </div>
+      </div>
+      <div class="over-tekst-wrapper">
+        <p class="sectie-tag">Wie ben ik?</p>
+        <h1 class="over-naam">Hallo,<br>ik ben <em style="font-style:italic;color:var(--goud)">jouw naam</em></h1>
+        <p class="over-subtitle">Thuiskok · Content creator · Voedselliefhebber</p>
+        <p>Voeg hier een persoonlijk stukje tekst toe over jezelf. Hoe ben je met koken begonnen? Wat inspireert jou in de keuken?</p>
+        <p>Dit is de plek waar jouw volgers je leren kennen — niet alleen als kok, maar als persoon. Schrijf zoals je praat: eerlijk, warm en authentiek.</p>
+        <p>Vertel ook over jouw kookstijl: gebruik je veel Italiaanse invloeden? Heb je een passie voor comfort food?</p>
+      </div>
+    </div>
+    <div class="over-waarden">
+      <div class="waarde-item"><div class="icoon">🌿</div><h4>Verse ingrediënten</h4><p>Seizoensgebonden, zo vers mogelijk — dat is het geheim achter elke smaakvolle maaltijd.</p></div>
+      <div class="waarde-item"><div class="icoon">❤️</div><h4>Koken met liefde</h4><p>Elke maaltijd is een kans om iemand te verwennen — je gezin, vrienden of gewoon jezelf.</p></div>
+      <div class="waarde-item"><div class="icoon">📖</div><h4>Recepten met verhaal</h4><p>Achter elk recept zit een herinnering, een moment, een emotie die ik graag deel.</p></div>
+    </div>
+    <div class="over-sociaal">
+      <h2>Volg mij online</h2>
+      <p>Dagelijkse inspiratie, kooktips en een kijkje achter de schermen:</p>
+      <div class="sociaal-groot">
+        <div class="sociaal-groot-link"><span class="icoon">📸</span><span class="platform">Instagram</span><span class="handle">@jouwhandle</span></div>
+        <div class="sociaal-groot-link"><span class="icoon">🎬</span><span class="platform">TikTok</span><span class="handle">@jouwhandle</span></div>
+        <div class="sociaal-groot-link"><span class="icoon">▶️</span><span class="platform">YouTube</span><span class="handle">Jouw Kanaal</span></div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-kolom"><div class="footer-logo">Mijn Keuken</div></div>
+      <div class="footer-kolom"><h4>Navigatie</h4><a onclick="toonPagina('home')">Home</a><a onclick="toonPagina('recepten')">Recepten</a><a onclick="toonPagina('shop')">Shop</a><a onclick="toonPagina('over')">Over Mij</a></div>
+      <div class="footer-kolom"><h4>Juridisch</h4><a onclick="toonPagina('privacy')">Privacyverklaring</a><a onclick="toonPagina('colofon')">Colofon</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Mijn Keuken</span><div style="display:flex;gap:1.5rem;"><a onclick="toonPagina('privacy')">Privacy</a><a onclick="toonPagina('colofon')">Colofon</a></div></div>
+  </footer>
+</div>
+
+<!-- ═══ PAGINA: PRIVACYVERKLARING ═══ -->
+<div id="pagina-privacy" class="pagina">
+  <div class="legal-pagina">
+    <p class="sectie-tag">Juridisch</p>
+    <h1>Privacyverklaring</h1>
+    <p class="legal-datum">Laatst bijgewerkt: januari 2025 · Conform de Europese AVG / GDPR-wetgeving</p>
+    <div class="legal-highlight">
+      <p>⚠️ <strong style="color:var(--crème)">Vul aan:</strong> Vervang overal <em>[JOUW NAAM]</em>, <em>[JOUW ADRES]</em> en <em>[JOUW EMAIL]</em> door jouw echte gegevens voordat deze verklaring rechtsgeldig is.</p>
+    </div>
+    <div class="legal-sectie">
+      <h2>1. Wie ben ik?</h2>
+      <p>Deze website wordt beheerd door <strong style="color:var(--crème)">[JOUW NAAM]</strong>, bereikbaar via:</p>
+      <p>📧 E-mail: <strong style="color:var(--crème)">[JOUW EMAIL]</strong><br>📍 Adres: <strong style="color:var(--crème)">[JOUW ADRES], België</strong></p>
+    </div>
+    <div class="legal-sectie">
+      <h2>2. Welke gegevens verzamel ik?</h2>
+      <p>Ik verzamel alleen gegevens die jij zelf aan mij geeft:</p>
+      <ul>
+        <li><strong style="color:var(--crème)">E-mailadres</strong> — wanneer je je inschrijft voor de wachtlijst van mijn shop.</li>
+        <li><strong style="color:var(--crème)">Geen andere persoonsgegevens</strong> — ik gebruik geen tracking, advertentiecookies of analysesoftware.</li>
+      </ul>
+    </div>
+    <div class="legal-sectie">
+      <h2>3. Waarvoor gebruik ik jouw e-mailadres?</h2>
+      <p>Uitsluitend om je te verwittigen wanneer mijn shop opent en om je de beloofde early-bird korting toe te sturen. Je ontvangt geen ongewenste nieuwsbrieven. Je kunt je op elk moment uitschrijven via de link in de e-mail.</p>
+    </div>
+    <div class="legal-sectie">
+      <h2>4. Cookies</h2>
+      <p>Deze website gebruikt enkel <strong style="color:var(--crème)">functionele cookies</strong> die noodzakelijk zijn voor de werking van de site. Er worden geen tracking- of advertentiecookies geplaatst.</p>
+    </div>
+    <div class="legal-sectie">
+      <h2>5. Worden jouw gegevens gedeeld?</h2>
+      <p>Nee. Ik verkoop, verhuur of deel jouw persoonsgegevens niet met derden, behalve wanneer dit wettelijk verplicht is.</p>
+    </div>
+    <div class="legal-sectie">
+      <h2>6. Hoe lang bewaar ik jouw gegevens?</h2>
+      <p>Jouw e-mailadres wordt bewaard totdat de shop live gaat en de uitnodiging verstuurd is, of totdat je vraagt om verwijdering — wat het eerst komt.</p>
+    </div>
+    <div class="legal-sectie">
+      <h2>7. Jouw rechten (GDPR)</h2>
+      <p>Op basis van de Europese privacywetgeving heb je het recht om:</p>
+      <ul>
+        <li>Inzage te vragen in de gegevens die ik over jou bewaar</li>
+        <li>Jouw gegevens te laten corrigeren of verwijderen</li>
+        <li>Bezwaar te maken tegen verwerking</li>
+        <li>Een klacht in te dienen bij de <strong style="color:var(--crème)">Gegevensbeschermingsautoriteit (GBA)</strong> via www.gegevensbeschermingsautoriteit.be</li>
+      </ul>
+      <p>Stuur voor alle vragen een e-mail naar <strong style="color:var(--crème)">[JOUW EMAIL]</strong>. Ik reageer binnen 30 dagen.</p>
+    </div>
+    <div style="margin-top:3rem;"><button class="knop-goud" onclick="toonPagina('home')">← Terug naar home</button></div>
+  </div>
+  <footer>
+    <div class="footer-bottom"><span>© 2025 Mijn Keuken</span><div style="display:flex;gap:1.5rem;"><a onclick="toonPagina('privacy')">Privacy</a><a onclick="toonPagina('colofon')">Colofon</a></div></div>
+  </footer>
+</div>
+
+<!-- ═══ PAGINA: COLOFON ═══ -->
+<div id="pagina-colofon" class="pagina">
+  <div class="legal-pagina">
+    <p class="sectie-tag">Juridisch</p>
+    <h1>Colofon &amp; Impressum</h1>
+    <p class="legal-datum">Verplichte vermeldingen conform Belgische en Europese wetgeving</p>
+    <div class="legal-highlight">
+      <p>⚠️ <strong style="color:var(--crème)">Vul aan:</strong> Vervang alle <em>[HAAKJES]</em> door jouw echte gegevens. Als particulier volstaat naam + woonplaats. Als je een zaak hebt, voeg ook je BTW-nummer toe.</p>
+    </div>
+    <div class="colofon-grid">
+      <div class="colofon-blok">
+        <h3>Verantwoordelijke uitgever</h3>
+        <div class="colofon-rij"><span>Naam</span><span>[JOUW VOLLEDIGE NAAM]</span></div>
+        <div class="colofon-rij"><span>Adres</span><span>[STRAAT EN NUMMER], [POSTCODE GEMEENTE]</span></div>
+        <div class="colofon-rij"><span>Land</span><span>België</span></div>
+        <div class="colofon-rij"><span>E-mail</span><span>[JOUW EMAIL]</span></div>
+      </div>
+      <div class="colofon-blok">
+        <h3>Website informatie</h3>
+        <div class="colofon-rij"><span>Websitenaam</span><span>Mijn Keuken</span></div>
+        <div class="colofon-rij"><span>Doel</span><span>Persoonlijke receptenwebsite</span></div>
+        <div class="colofon-rij"><span>BTW-nummer</span><span>[INDIEN VAN TOEPASSING]</span></div>
+        <div class="colofon-rij"><span>Hosting</span><span>Vercel (vercel.com)</span></div>
+      </div>
+    </div>
+    <div class="legal-sectie" style="margin-top:2.5rem;">
+      <h2>Intellectuele eigendom</h2>
+      <p>Alle inhoud op deze website — inclusief teksten, foto's, recepten en afbeeldingen — is eigendom van <strong style="color:var(--crème)">[JOUW NAAM]</strong>, tenzij anders vermeld. Niets van deze website mag worden gekopieerd of gepubliceerd zonder uitdrukkelijke schriftelijke toestemming.</p>
+    </div>
+    <div class="legal-sectie">
+      <h2>Aansprakelijkheid</h2>
+      <p>De informatie op deze website is met zorg samengesteld. Ik kan echter niet garanderen dat alle informatie volledig, correct of actueel is. Aan de inhoud van deze website kunnen geen rechten worden ontleend.</p>
+    </div>
+    <div class="legal-sectie">
+      <h2>Geschillen</h2>
+      <p>Op deze website is uitsluitend het Belgisch recht van toepassing. Bij eventuele geschillen zijn uitsluitend de rechtbanken van <strong style="color:var(--crème)">[JOUW ARRONDISSEMENT]</strong> bevoegd.</p>
+    </div>
+    <div style="margin-top:3rem;"><button class="knop-goud" onclick="toonPagina('home')">← Terug naar home</button></div>
+  </div>
+  <footer>
+    <div class="footer-bottom"><span>© 2025 Mijn Keuken</span><div style="display:flex;gap:1.5rem;"><a onclick="toonPagina('privacy')">Privacy</a><a onclick="toonPagina('colofon')">Colofon</a></div></div>
+  </footer>
+</div>
+
+<!-- JAVASCRIPT -->
+<script>
+const RECEPTEN = [
+  {id:1,naam:"Pasta Carbonara",categorie:"Pasta",beschrijving:"De klassieke Romeinse pasta — romig, hartig en klaar in 20 minuten. Geen room, wél veel liefde.",bereidingstijd:"20 min",porties:"2 personen",basisPorties:2,moeilijkheid:"Makkelijk",
+   ingredienten:[{naam:"Spaghetti",hoeveelheid:"200g"},{naam:"Pancetta of spek",hoeveelheid:"100g"},{naam:"Eieren (heel)",hoeveelheid:"2"},{naam:"Eidooiers",hoeveelheid:"2"},{naam:"Pecorino Romano",hoeveelheid:"60g"},{naam:"Zwarte peper",hoeveelheid:"royaal"},{naam:"Zout",hoeveelheid:"1 el"}],
+   stappen:["Breng een grote pan gezouten water aan de kook. Kook de spaghetti 1 minuut korter dan de verpakking aangeeft.","Bak de pancetta zonder olie op middelhoog vuur tot knapperig en goudbruin. Zet het vuur laag.","Klop in een kom de eieren, eidooiers en geraspte pecorino. Voeg royaal zwarte peper toe.","Schep de spaghetti rechtstreeks uit het kookwater in de pan bij de pancetta. Laat wat kookwater mee.","Haal de pan volledig van het vuur. Voeg het eimengsel toe en roer snel. Voeg scheutjes kookwater toe tot je een zijdezachte saus krijgt.","Serveer direct met extra pecorino en peper. 🍝"]},
+  {id:2,naam:"Tomatensoep met Gegrild Brood",categorie:"Comfort Food",beschrijving:"Thuisgemaakt, vol van smaak en troostend als een warme deken. Perfect voor een koude avond.",bereidingstijd:"35 min",porties:"4 personen",basisPorties:4,moeilijkheid:"Makkelijk",
+   ingredienten:[{naam:"Gepelde tomaten (blik)",hoeveelheid:"2 blikken"},{naam:"Ui",hoeveelheid:"1 grote"},{naam:"Knoflook",hoeveelheid:"3 teentjes"},{naam:"Groentebouillon",hoeveelheid:"500ml"},{naam:"Olijfolie",hoeveelheid:"3 el"},{naam:"Verse basilicum",hoeveelheid:"handvol"},{naam:"Zuurdesembrood",hoeveelheid:"4 sneden"}],
+   stappen:["Snipper de ui fijn. Fruit op middelhoog vuur in olijfolie tot glazig (± 5 min).","Voeg knoflook toe, bak 1 minuut mee.","Voeg tomaten en bouillon toe. Laat 20 minuten zacht koken.","Voeg basilicum toe en blend de soep glad.","Grill het brood tot knapperig en goudbruin.","Serveer de soep met gegrild brood en een scheut olijfolie."]},
+  {id:3,naam:"Roerbak Noedels met Groenten",categorie:"Snel & Makkelijk",beschrijving:"Van aansnijden tot serveren in 15 minuten. Kleurrijk, krokant en vol umami-smaak.",bereidingstijd:"15 min",porties:"2 personen",basisPorties:2,moeilijkheid:"Makkelijk",
+   ingredienten:[{naam:"Eiernoedels",hoeveelheid:"200g"},{naam:"Paksoi",hoeveelheid:"1 stuk"},{naam:"Paprika (rood)",hoeveelheid:"1"},{naam:"Wortelen",hoeveelheid:"2"},{naam:"Sojasaus",hoeveelheid:"3 el"},{naam:"Sesamolie",hoeveelheid:"1 el"},{naam:"Knoflook",hoeveelheid:"2 teentjes"}],
+   stappen:["Kook de noedels (3-4 min). Afgieten en spoelen met koud water.","Verhit een wok op hoog vuur. Voeg olie toe.","Bak knoflook 30 sec. Voeg wortel en paprika toe, roerbak 2-3 min.","Voeg paksoi toe, roerbak 1 min.","Voeg noedels, sojasaus en sesamolie toe. Meng goed op hoog vuur.","Serveer met sesamzaadjes."]},
+  {id:4,naam:"Pasta Pesto met Gegrilde Groenten",categorie:"Vegetarisch",beschrijving:"Frisse zelfgemaakte pesto met gegrilde courgette en cherrytomaatjes — het proeft naar zomer.",bereidingstijd:"25 min",porties:"3 personen",basisPorties:3,moeilijkheid:"Makkelijk",
+   ingredienten:[{naam:"Pasta (trofie of fusilli)",hoeveelheid:"300g"},{naam:"Verse basilicum",hoeveelheid:"60g"},{naam:"Pijnboompitten",hoeveelheid:"30g"},{naam:"Parmezaanse kaas",hoeveelheid:"50g"},{naam:"Courgette",hoeveelheid:"1"},{naam:"Cherrytomaatjes",hoeveelheid:"150g"},{naam:"Olijfolie",hoeveelheid:"80ml"}],
+   stappen:["Rooster pijnboompitten droog tot goudbruin.","Blend basilicum, pijnboompitten, knoflook en parmezaan. Voeg olijfolie toe.","Snijd courgette in plakken. Grill tot grillstrepen zichtbaar zijn.","Halveer tomaatjes en voeg toe aan de grillpan voor 1 min.","Kook pasta. Bewaar een kopje kookwater.","Meng pasta met pesto en kookwater. Verdeel groenten erbovenop."]},
+  {id:5,naam:"Linzensoep met Citroen",categorie:"Vegetarisch",beschrijving:"Hartverwarmend, vullend en boordevol smaak. De dag erna nog lekkerder.",bereidingstijd:"40 min",porties:"4 personen",basisPorties:4,moeilijkheid:"Makkelijk",
+   ingredienten:[{naam:"Rode linzen",hoeveelheid:"250g"},{naam:"Ui",hoeveelheid:"1 grote"},{naam:"Wortel",hoeveelheid:"2"},{naam:"Groentebouillon",hoeveelheid:"1 liter"},{naam:"Komijn",hoeveelheid:"1 tl"},{naam:"Kurkuma",hoeveelheid:"½ tl"},{naam:"Citroen",hoeveelheid:"1"}],
+   stappen:["Fruit ui en wortel in olijfolie (5 min).","Voeg knoflook, komijn en kurkuma toe. Bak 1 minuut.","Voeg linzen en bouillon toe. Kook 25 minuten.","Blend de helft voor een romige structuur.","Roer citroensap erdoor. Breng op smaak.","Serveer met verse koriander en olijfolie."]},
+  {id:6,naam:"Snelle Shakshuka",categorie:"Snel & Makkelijk",beschrijving:"Eieren gepocheerd in een pittige tomatensaus — perfect voor brunch of een snelle avondmaaltijd.",bereidingstijd:"20 min",porties:"2 personen",basisPorties:2,moeilijkheid:"Makkelijk",
+   ingredienten:[{naam:"Eieren",hoeveelheid:"4"},{naam:"Gepelde tomaten (blik)",hoeveelheid:"1 blik"},{naam:"Rode paprika",hoeveelheid:"1"},{naam:"Ui",hoeveelheid:"1"},{naam:"Harissa",hoeveelheid:"1 tl"},{naam:"Feta",hoeveelheid:"50g"},{naam:"Peterselie",hoeveelheid:"handvol"}],
+   stappen:["Fruit ui en paprika in olijfolie (5 min).","Voeg knoflook, komijn en harissa toe. Voeg tomaten toe en laat 8 min sudderen.","Maak 4 kuiltjes. Breek een ei in elk kuiltje.","Deksel op de pan. Pocheer 3-4 min voor vloeibare dooier.","Bestrooi met feta en peterselie. Serveer met brood."]}
+];
+
+let huidigFilter = 'Alles';
+
+function sluitCookies() {
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+
+function toonPagina(naam) {
+  document.querySelectorAll('.pagina').forEach(p => p.classList.remove('actief'));
+  document.getElementById('pagina-' + naam).classList.add('actief');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('actief-link'));
+  const actief = document.getElementById('nav-' + naam);
+  if (actief) actief.classList.add('actief-link');
+  window.scrollTo(0, 0);
+  if (naam === 'recepten') renderReceptenGrid();
+  if (naam === 'home') renderHomeRecepten();
+  return false;
+}
+
+function maakKaartHTML(r) {
+  return `<div class="recept-kaart" onclick="toonRecept(${r.id})">
+    <div class="foto-wrapper"><div class="foto-placeholder" style="min-height:220px;"><span style="font-size:2rem;opacity:0.3;">🍽</span><span style="font-size:0.7rem;opacity:0.4;">${r.naam}</span></div></div>
+    <div class="recept-kaart-info">
+      <div class="recept-categorie">${r.categorie}</div>
+      <div class="recept-naam">${r.naam}</div>
+      <div class="recept-beschrijving">${r.beschrijving}</div>
+      <div class="recept-meta"><span>⏱ ${r.bereidingstijd}</span><span>👥 ${r.porties}</span><span>📊 ${r.moeilijkheid}</span></div>
+    </div></div>`;
+}
+
+function renderHomeRecepten() {
+  const g = document.getElementById('home-recepten-grid');
+  if (g) g.innerHTML = RECEPTEN.slice(0, 3).map(maakKaartHTML).join('');
+}
+
+function renderReceptenGrid() {
+  const zoek = (document.getElementById('zoek-input')?.value || '').toLowerCase();
+  const g = document.getElementById('recepten-groot-grid');
+  if (!g) return;
+  const lijst = RECEPTEN.filter(r => {
+    const cat = huidigFilter === 'Alles' || r.categorie === huidigFilter;
+    const q = !zoek || r.naam.toLowerCase().includes(zoek) || r.beschrijving.toLowerCase().includes(zoek) || r.ingredienten.some(i => i.naam.toLowerCase().includes(zoek));
+    return cat && q;
+  });
+  g.innerHTML = lijst.length ? lijst.map(maakKaartHTML).join('') : '<div class="geen-resultaten">Geen recepten gevonden 🔍</div>';
+}
+
+function setFilter(f, knop) {
+  huidigFilter = f;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('actief'));
+  knop.classList.add('actief');
+  renderReceptenGrid();
+}
+
+function filterRecepten() { renderReceptenGrid(); }
+
+function filterEnGa(categorie) {
+  huidigFilter = categorie;
+  toonPagina('recepten');
+  setTimeout(() => {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.toggle('actief', t.textContent.trim() === categorie));
+    renderReceptenGrid();
+  }, 50);
+}
+
+// ─── PORTIE SYSTEEM ───────────────────────────────────────────
+// Haalt het getal uit een hoeveelheid-string, bv. "200g" → 200
+function haalGetalUit(tekst) {
+  const match = tekst.match(/[\d]+([.,]\d+)?/);
+  return match ? parseFloat(match[0].replace(',', '.')) : null;
+}
+
+// Haalt de eenheid uit een hoeveelheid-string, bv. "200g" → "g"
+function haalEenheidUit(tekst) {
+  return tekst.replace(/[\d]+([.,]\d+)?/, '').trim();
+}
+
+// Maakt van een getal een nette string: 1.5 → "1½", 0.25 → "¼" etc.
+function formaatGetal(getal) {
+  const geheel = Math.floor(getal);
+  const rest = getal - geheel;
+  const breuken = { 0.25: '¼', 0.33: '⅓', 0.5: '½', 0.67: '⅔', 0.75: '¾' };
+  // Zoek dichtstbijzijnde breuk
+  let breukTekst = '';
+  for (const [waarde, symbool] of Object.entries(breuken)) {
+    if (Math.abs(rest - parseFloat(waarde)) < 0.08) { breukTekst = symbool; break; }
+  }
+  if (geheel === 0) return breukTekst || getal.toFixed(1);
+  return breukTekst ? `${geheel}${breukTekst}` : (Number.isInteger(getal) ? String(getal) : getal.toFixed(1));
+}
+
+// Herberekent alle hoeveelheden op basis van nieuw portieaantal
+function herbereken(huidigPorties, basisPorties, basisIngredienten) {
+  const factor = huidigPorties / basisPorties;
+  document.querySelectorAll('.hoeveelheid[data-basis]').forEach((el, index) => {
+    const basis = basisIngredienten[index].hoeveelheid;
+    const getal = haalGetalUit(basis);
+    if (getal !== null) {
+      const eenheid = haalEenheidUit(basis);
+      const nieuw = getal * factor;
+      el.textContent = formaatGetal(nieuw) + (eenheid ? ' ' + eenheid : '');
+    }
+    // Woorden zoals "royaal", "naar smaak" blijven ongewijzigd
+  });
+  document.getElementById('portie-display').textContent = huidigPorties;
+}
+
+let huidigPorties = 2; // wordt gezet bij openen recept
+let basisPorties  = 2;
+let huidigReceptIngredienten = [];
+
+function wijzigPorties(delta) {
+  const nieuw = huidigPorties + delta;
+  if (nieuw < 1 || nieuw > 20) return;
+  huidigPorties = nieuw;
+  herbereken(huidigPorties, basisPorties, huidigReceptIngredienten);
+  // Knoppen grijs maken aan de grenzen
+  document.getElementById('knop-min').style.opacity = huidigPorties <= 1 ? '0.3' : '1';
+  document.getElementById('knop-plus').style.opacity = huidigPorties >= 20 ? '0.3' : '1';
+}
+
+function toonRecept(id) {
+  const r = RECEPTEN.find(x => x.id === id);
+  if (!r) return;
+
+  // Stel portie-staat in
+  const basisGetal = parseInt(r.porties) || 2;
+  huidigPorties = basisGetal;
+  basisPorties  = basisGetal;
+  huidigReceptIngredienten = r.ingredienten;
+
+  // Bouw ingrediënten HTML met data-basis attribuut voor herberekening
+  const ingredientenHTML = r.ingredienten.map((i, idx) =>
+    `<li><span>${i.naam}</span><span class="hoeveelheid" data-basis="${idx}">${i.hoeveelheid}</span></li>`
+  ).join('');
+
+  document.getElementById('recept-detail-inhoud').innerHTML = `
+    <div class="recept-hero">
+      <div class="foto-placeholder" style="position:absolute;inset:0;min-height:unset;height:100%;"><span style="font-size:4rem;opacity:0.25;">🍽</span></div>
+      <div class="recept-hero-overlay"></div>
+      <div class="recept-hero-inhoud">
+        <div class="recept-hero-categorie">${r.categorie}</div>
+        <h1 class="recept-hero-titel">${r.naam}</h1>
+        <div class="recept-hero-meta"><span>⏱ ${r.bereidingstijd}</span><span>👥 ${r.porties}</span><span>📊 ${r.moeilijkheid}</span></div>
+      </div>
+    </div>
+    <div class="recept-inhoud">
+      <div class="ingredienten-blok">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; padding-bottom:0.75rem; border-bottom:1px solid rgba(201,168,76,0.3);">
+          <h3 style="margin:0; border:none; padding:0;">Ingrediënten</h3>
+          <div class="portie-regeling">
+            <button class="portie-knop" id="knop-min" onclick="wijzigPorties(-1)">−</button>
+            <div class="portie-midden">
+              <span class="portie-label">personen</span>
+              <span class="portie-getal" id="portie-display">${basisGetal}</span>
+            </div>
+            <button class="portie-knop" id="knop-plus" onclick="wijzigPorties(1)">+</button>
+          </div>
+        </div>
+        <ul class="ingredienten-list">${ingredientenHTML}</ul>
+      </div>
+      <div class="stappen-blok">
+        <h3>Bereidingswijze</h3>
+        ${r.stappen.map((s,i)=>`<div class="stap"><div class="stap-nummer">${String(i+1).padStart(2,'0')}</div><div class="stap-tekst">${s}</div></div>`).join('')}
+      </div>
+    </div>`;
+  toonPagina('recept');
+}
+
+function inschrijving(knop, okId) {
+  knop.textContent = '✓';
+  knop.style.background = 'var(--groen-licht)';
+  if (okId) {
+    const ok = document.getElementById(okId);
+    if (ok) ok.style.display = 'block';
+  }
+}
+
+renderHomeRecepten();
+</script>
+</body>
+</html>
