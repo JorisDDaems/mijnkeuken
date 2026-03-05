@@ -755,238 +755,174 @@
 
 <!-- JAVASCRIPT -->
 <script>
+// ═══════════════════════════════════════════════════════════════
+// RECEPTEN DATA
+// seizoen: "Alle seizoenen" / "Lente" / "Zomer" / "Herfst" / "Winter"
+// sterren: 1 t.e.m. 5
+// ═══════════════════════════════════════════════════════════════
 const RECEPTEN = [
-  {id:1,naam:"Pasta Carbonara",categorie:"Pasta",seizoen:"Winter",sterren:5,beschrijving:"De klassieke Romeinse pasta — romig, hartig en klaar in 20 minuten. Geen room, wél veel liefde.",bereidingstijd:"20 min",porties:"2 personen",basisPorties:2,moeilijkheid:"Makkelijk",
+  {id:1,naam:"Pasta Carbonara",categorie:"Pasta",seizoen:"Winter",sterren:5,
+   beschrijving:"De klassieke Romeinse pasta — romig, hartig en klaar in 20 minuten. Geen room, wél veel liefde.",
+   bereidingstijd:"20 min",porties:"2 personen",basisPorties:2,moeilijkheid:"Makkelijk",
    ingredienten:[{naam:"Spaghetti",hoeveelheid:"200g"},{naam:"Pancetta of spek",hoeveelheid:"100g"},{naam:"Eieren (heel)",hoeveelheid:"2"},{naam:"Eidooiers",hoeveelheid:"2"},{naam:"Pecorino Romano",hoeveelheid:"60g"},{naam:"Zwarte peper",hoeveelheid:"royaal"},{naam:"Zout",hoeveelheid:"1 el"}],
    stappen:["Breng een grote pan gezouten water aan de kook. Kook de spaghetti 1 minuut korter dan de verpakking aangeeft.","Bak de pancetta zonder olie op middelhoog vuur tot knapperig en goudbruin. Zet het vuur laag.","Klop in een kom de eieren, eidooiers en geraspte pecorino. Voeg royaal zwarte peper toe.","Schep de spaghetti rechtstreeks uit het kookwater in de pan bij de pancetta. Laat wat kookwater mee.","Haal de pan volledig van het vuur. Voeg het eimengsel toe en roer snel. Voeg scheutjes kookwater toe tot je een zijdezachte saus krijgt.","Serveer direct met extra pecorino en peper."]},
-  {id:2,naam:"Tomatensoep met Gegrild Brood",categorie:"Comfort Food",seizoen:"Herfst",sterren:5,beschrijving:"Thuisgemaakt, vol van smaak en troostend als een warme deken. Perfect voor een koude avond.",bereidingstijd:"35 min",porties:"4 personen",basisPorties:4,moeilijkheid:"Makkelijk",
+  {id:2,naam:"Tomatensoep met Gegrild Brood",categorie:"Comfort Food",seizoen:"Herfst",sterren:5,
+   beschrijving:"Thuisgemaakt, vol van smaak en troostend als een warme deken. Perfect voor een koude avond.",
+   bereidingstijd:"35 min",porties:"4 personen",basisPorties:4,moeilijkheid:"Makkelijk",
    ingredienten:[{naam:"Gepelde tomaten (blik)",hoeveelheid:"2 blikken"},{naam:"Ui",hoeveelheid:"1 grote"},{naam:"Knoflook",hoeveelheid:"3 teentjes"},{naam:"Groentebouillon",hoeveelheid:"500ml"},{naam:"Olijfolie",hoeveelheid:"3 el"},{naam:"Verse basilicum",hoeveelheid:"handvol"},{naam:"Zuurdesembrood",hoeveelheid:"4 sneden"}],
    stappen:["Snipper de ui fijn. Fruit op middelhoog vuur in olijfolie tot glazig (5 min).","Voeg knoflook toe, bak 1 minuut mee.","Voeg tomaten en bouillon toe. Laat 20 minuten zacht koken.","Voeg basilicum toe en blend de soep glad.","Grill het brood tot knapperig en goudbruin.","Serveer de soep met gegrild brood en een scheut olijfolie."]},
-  {id:3,naam:"Roerbak Noedels met Groenten",categorie:"Snel & Makkelijk",seizoen:"Alle seizoenen",sterren:4,beschrijving:"Van aansnijden tot serveren in 15 minuten. Kleurrijk, krokant en vol umami-smaak.",bereidingstijd:"15 min",porties:"2 personen",basisPorties:2,moeilijkheid:"Makkelijk",
+  {id:3,naam:"Roerbak Noedels met Groenten",categorie:"Snel & Makkelijk",seizoen:"Alle seizoenen",sterren:4,
+   beschrijving:"Van aansnijden tot serveren in 15 minuten. Kleurrijk, krokant en vol umami-smaak.",
+   bereidingstijd:"15 min",porties:"2 personen",basisPorties:2,moeilijkheid:"Makkelijk",
    ingredienten:[{naam:"Eiernoedels",hoeveelheid:"200g"},{naam:"Paksoi",hoeveelheid:"1 stuk"},{naam:"Paprika (rood)",hoeveelheid:"1"},{naam:"Wortelen",hoeveelheid:"2"},{naam:"Sojasaus",hoeveelheid:"3 el"},{naam:"Sesamolie",hoeveelheid:"1 el"},{naam:"Knoflook",hoeveelheid:"2 teentjes"}],
    stappen:["Kook de noedels (3-4 min). Afgieten en spoelen met koud water.","Verhit een wok op hoog vuur. Voeg olie toe.","Bak knoflook 30 sec. Voeg wortel en paprika toe, roerbak 2-3 min.","Voeg paksoi toe, roerbak 1 min.","Voeg noedels, sojasaus en sesamolie toe. Meng goed op hoog vuur.","Serveer met sesamzaadjes."]},
-  {id:4,naam:"Pasta Pesto met Gegrilde Groenten",categorie:"Vegetarisch",seizoen:"Zomer",sterren:5,beschrijving:"Frisse zelfgemaakte pesto met gegrilde courgette en cherrytomaatjes — het proeft naar zomer.",bereidingstijd:"25 min",porties:"3 personen",basisPorties:3,moeilijkheid:"Makkelijk",
+  {id:4,naam:"Pasta Pesto met Gegrilde Groenten",categorie:"Vegetarisch",seizoen:"Zomer",sterren:5,
+   beschrijving:"Frisse zelfgemaakte pesto met gegrilde courgette en cherrytomaatjes — het proeft naar zomer.",
+   bereidingstijd:"25 min",porties:"3 personen",basisPorties:3,moeilijkheid:"Makkelijk",
    ingredienten:[{naam:"Pasta (trofie of fusilli)",hoeveelheid:"300g"},{naam:"Verse basilicum",hoeveelheid:"60g"},{naam:"Pijnboompitten",hoeveelheid:"30g"},{naam:"Parmezaanse kaas",hoeveelheid:"50g"},{naam:"Courgette",hoeveelheid:"1"},{naam:"Cherrytomaatjes",hoeveelheid:"150g"},{naam:"Olijfolie",hoeveelheid:"80ml"}],
    stappen:["Rooster pijnboompitten droog tot goudbruin.","Blend basilicum, pijnboompitten, knoflook en parmezaan. Voeg olijfolie toe.","Snijd courgette in plakken. Grill tot grillstrepen zichtbaar zijn.","Halveer tomaatjes en voeg toe aan de grillpan voor 1 min.","Kook pasta. Bewaar een kopje kookwater.","Meng pasta met pesto en kookwater. Verdeel groenten erbovenop."]},
-  {id:5,naam:"Linzensoep met Citroen",categorie:"Vegetarisch",seizoen:"Winter",sterren:4,beschrijving:"Hartverwarmend, vullend en boordevol smaak. De dag erna nog lekkerder.",bereidingstijd:"40 min",porties:"4 personen",basisPorties:4,moeilijkheid:"Makkelijk",
+  {id:5,naam:"Linzensoep met Citroen",categorie:"Vegetarisch",seizoen:"Winter",sterren:4,
+   beschrijving:"Hartverwarmend, vullend en boordevol smaak. De dag erna nog lekkerder.",
+   bereidingstijd:"40 min",porties:"4 personen",basisPorties:4,moeilijkheid:"Makkelijk",
    ingredienten:[{naam:"Rode linzen",hoeveelheid:"250g"},{naam:"Ui",hoeveelheid:"1 grote"},{naam:"Wortel",hoeveelheid:"2"},{naam:"Groentebouillon",hoeveelheid:"1 liter"},{naam:"Komijn",hoeveelheid:"1 tl"},{naam:"Kurkuma",hoeveelheid:"½ tl"},{naam:"Citroen",hoeveelheid:"1"}],
    stappen:["Fruit ui en wortel in olijfolie (5 min).","Voeg knoflook, komijn en kurkuma toe. Bak 1 minuut.","Voeg linzen en bouillon toe. Kook 25 minuten.","Blend de helft voor een romige structuur.","Roer citroensap erdoor. Breng op smaak.","Serveer met verse koriander en olijfolie."]},
-  {id:6,naam:"Snelle Shakshuka",categorie:"Snel & Makkelijk",seizoen:"Lente",sterren:5,beschrijving:"Eieren gepocheerd in een pittige tomatensaus — perfect voor brunch of een snelle avondmaaltijd.",bereidingstijd:"20 min",porties:"2 personen",basisPorties:2,moeilijkheid:"Makkelijk",
+  {id:6,naam:"Snelle Shakshuka",categorie:"Snel & Makkelijk",seizoen:"Lente",sterren:5,
+   beschrijving:"Eieren gepocheerd in een pittige tomatensaus — perfect voor brunch of een snelle avondmaaltijd.",
+   bereidingstijd:"20 min",porties:"2 personen",basisPorties:2,moeilijkheid:"Makkelijk",
    ingredienten:[{naam:"Eieren",hoeveelheid:"4"},{naam:"Gepelde tomaten (blik)",hoeveelheid:"1 blik"},{naam:"Rode paprika",hoeveelheid:"1"},{naam:"Ui",hoeveelheid:"1"},{naam:"Harissa",hoeveelheid:"1 tl"},{naam:"Feta",hoeveelheid:"50g"},{naam:"Peterselie",hoeveelheid:"handvol"}],
    stappen:["Fruit ui en paprika in olijfolie (5 min).","Voeg knoflook, komijn en harissa toe. Voeg tomaten toe en laat 8 min sudderen.","Maak 4 kuiltjes. Breek een ei in elk kuiltje.","Deksel op de pan. Pocheer 3-4 min voor vloeibare dooier.","Bestrooi met feta en peterselie. Serveer met brood."]}
 ];
 
-let huidigFilter  = 'Alles';
-let huidigSeizoen = 'Alle seizoenen';
+// ═══════════════════════════════════════════════════════════════
+// STAAT (globale variabelen — slechts 1 keer gedeclareerd)
+// ═══════════════════════════════════════════════════════════════
+let huidigFilter            = 'Alles';
+let huidigSeizoen           = 'Alle seizoenen';
+let huidigPorties           = 2;
+let basisPorties            = 2;
+let huidigReceptIngredienten = [];
 
+// ═══════════════════════════════════════════════════════════════
+// HULPFUNCTIES
+// ═══════════════════════════════════════════════════════════════
 function sterrenHTML(n) {
-  return Array.from({length:5},(_,i)=>`<span class="ster ${i<n?'vol':''}">&#9733;</span>`).join('');
+  return Array.from({length:5}, (_, i) =>
+    `<span class="ster ${i < n ? 'vol' : ''}">&#9733;</span>`
+  ).join('');
 }
+
+function haalGetalUit(tekst) {
+  const match = tekst.match(/\d+([.,]\d+)?/);
+  return match ? parseFloat(match[0].replace(',', '.')) : null;
+}
+
+function haalEenheidUit(tekst) {
+  return tekst.replace(/\d+([.,]\d+)?/, '').trim();
+}
+
+function formaatGetal(getal) {
+  const geheel = Math.floor(getal);
+  const rest   = getal - geheel;
+  const breuken = {'0.25':'&#188;','0.33':'&#8531;','0.5':'&#189;','0.67':'&#8532;','0.75':'&#190;'};
+  let breukSymbool = '';
+  for (const [waarde, symbool] of Object.entries(breuken)) {
+    if (Math.abs(rest - parseFloat(waarde)) < 0.08) { breukSymbool = symbool; break; }
+  }
+  if (geheel === 0) return breukSymbool || getal.toFixed(1);
+  return breukSymbool
+    ? `${geheel}${breukSymbool}`
+    : (Number.isInteger(getal) ? String(getal) : getal.toFixed(1));
+}
+
+// ═══════════════════════════════════════════════════════════════
+// NAVIGATIE
+// ═══════════════════════════════════════════════════════════════
 function toggleMenu() {
   document.getElementById('hamburger').classList.toggle('open');
   document.getElementById('mobiel-menu').classList.toggle('open');
 }
+
 function sluitMenu() {
   document.getElementById('hamburger').classList.remove('open');
   document.getElementById('mobiel-menu').classList.remove('open');
 }
-function sluitCookies() { document.getElementById('cookie-banner').style.display='none'; }
 
-function toonPagina(naam) {
-  document.querySelectorAll('.pagina').forEach(p=>p.classList.remove('actief'));
-  document.getElementById('pagina-'+naam).classList.add('actief');
-  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('actief-link'));
-  const d=document.getElementById('nav-'+naam); if(d) d.classList.add('actief-link');
-  document.querySelectorAll('.mobiel-menu a').forEach(a=>a.classList.remove('actief-link'));
-  const m=document.getElementById('mnav-'+naam); if(m) m.classList.add('actief-link');
-  window.scrollTo(0,0);
-  if(naam==='recepten') renderReceptenGrid();
-  if(naam==='home')     renderHomeRecepten();
-  return false;
+function sluitCookies() {
+  document.getElementById('cookie-banner').style.display = 'none';
 }
 
+function toonPagina(naam) {
+  document.querySelectorAll('.pagina').forEach(p => p.classList.remove('actief'));
+  document.getElementById('pagina-' + naam).classList.add('actief');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('actief-link'));
+  const navLink = document.getElementById('nav-' + naam);
+  if (navLink) navLink.classList.add('actief-link');
+  document.querySelectorAll('.mobiel-menu a').forEach(a => a.classList.remove('actief-link'));
+  const mobLink = document.getElementById('mnav-' + naam);
+  if (mobLink) mobLink.classList.add('actief-link');
+  window.scrollTo(0, 0);
+  if (naam === 'recepten') renderReceptenGrid();
+  if (naam === 'home')     renderHomeRecepten();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RECEPTEN GRID
+// ═══════════════════════════════════════════════════════════════
 function maakKaartHTML(r) {
   return `<div class="recept-kaart" onclick="toonRecept(${r.id})">
-    <div class="foto-wrapper"><div class="foto-placeholder" style="min-height:220px;"><span style="font-size:2rem;opacity:0.3;">&#127869;</span><span style="font-size:0.7rem;opacity:0.4;">${r.naam}</span></div></div>
+    <div class="foto-wrapper">
+      <div class="foto-placeholder" style="min-height:220px;">
+        <span style="font-size:2rem;opacity:0.3;">&#127869;</span>
+        <span style="font-size:0.7rem;opacity:0.4;">${r.naam}</span>
+      </div>
+    </div>
     <div class="recept-kaart-info">
       <div class="recept-categorie">${r.categorie} &middot; ${r.seizoen}</div>
       <div class="ster-rij">${sterrenHTML(r.sterren)}</div>
       <div class="recept-naam">${r.naam}</div>
       <div class="recept-beschrijving">${r.beschrijving}</div>
-      <div class="recept-meta"><span>&#9201; ${r.bereidingstijd}</span><span>&#128101; ${r.porties}</span><span>&#128202; ${r.moeilijkheid}</span></div>
-    </div></div>`;
+      <div class="recept-meta">
+        <span>&#9201; ${r.bereidingstijd}</span>
+        <span>&#128101; ${r.porties}</span>
+        <span>&#128202; ${r.moeilijkheid}</span>
+      </div>
+    </div>
+  </div>`;
 }
 
 function renderHomeRecepten() {
-  const g=document.getElementById('home-recepten-grid');
-  if(g) g.innerHTML=RECEPTEN.slice(0,3).map(maakKaartHTML).join('');
+  const grid = document.getElementById('home-recepten-grid');
+  if (grid) grid.innerHTML = RECEPTEN.slice(0, 3).map(maakKaartHTML).join('');
 }
 
 function renderReceptenGrid() {
-  const zoek=(document.getElementById('zoek-input')?.value||'').toLowerCase();
-  const g=document.getElementById('recepten-groot-grid');
-  if(!g) return;
-  const lijst=RECEPTEN.filter(r=>{
-    const cat=huidigFilter==='Alles'||r.categorie===huidigFilter;
-    const sei=huidigSeizoen==='Alle seizoenen'||r.seizoen===huidigSeizoen||r.seizoen==='Alle seizoenen';
-    const q=!zoek||r.naam.toLowerCase().includes(zoek)||r.beschrijving.toLowerCase().includes(zoek)||r.ingredienten.some(i=>i.naam.toLowerCase().includes(zoek));
-    return cat&&sei&&q;
+  const zoekTekst = (document.getElementById('zoek-input')?.value || '').toLowerCase();
+  const grid = document.getElementById('recepten-groot-grid');
+  if (!grid) return;
+  const gefilterd = RECEPTEN.filter(r => {
+    const catOk  = huidigFilter  === 'Alles'          || r.categorie === huidigFilter;
+    const seiOk  = huidigSeizoen === 'Alle seizoenen'  || r.seizoen   === huidigSeizoen || r.seizoen === 'Alle seizoenen';
+    const zoekOk = !zoekTekst
+      || r.naam.toLowerCase().includes(zoekTekst)
+      || r.beschrijving.toLowerCase().includes(zoekTekst)
+      || r.ingredienten.some(i => i.naam.toLowerCase().includes(zoekTekst));
+    return catOk && seiOk && zoekOk;
   });
-  g.innerHTML=lijst.length?lijst.map(maakKaartHTML).join(''):'<div class="geen-resultaten">Geen recepten gevonden &#128269;</div>';
+  grid.innerHTML = gefilterd.length
+    ? gefilterd.map(maakKaartHTML).join('')
+    : '<div class="geen-resultaten">Geen recepten gevonden &#128269;</div>';
 }
 
-function setFilter(f,knop){
-  huidigFilter=f;
-  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('actief'));
-  knop.classList.add('actief');
-  renderReceptenGrid();
-}
-function setSeizoen(s,knop){
-  huidigSeizoen=s;
-  document.querySelectorAll('.seizoen-tab').forEach(t=>t.classList.remove('actief'));
-  knop.classList.add('actief');
-  renderReceptenGrid();
-}
-function filterRecepten(){ renderReceptenGrid(); }
-function filterEnGa(categorie){
-  huidigFilter=categorie; huidigSeizoen='Alle seizoenen';
-  toonPagina('recepten');
-  setTimeout(()=>{
-    document.querySelectorAll('.filter-tab').forEach(t=>t.classList.toggle('actief',t.textContent.trim()===categorie));
-    document.querySelectorAll('.seizoen-tab').forEach((t,i)=>t.classList.toggle('actief',i===0));
-    renderReceptenGrid();
-  },50);
-}
-
-function deelWhatsApp(naam){
-  const url=encodeURIComponent(window.location.href);
-  const tekst=encodeURIComponent('Kijk eens naar dit recept: '+naam+' ');
-  window.open('https://wa.me/?text='+tekst+url,'_blank');
-}
-function deelFacebook(){
-  window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(window.location.href),'_blank');
-}
-function kopieerLink(knop){
-  navigator.clipboard.writeText(window.location.href).then(()=>{
-    const orig=knop.textContent;
-    knop.textContent='✓ Gekopieerd!'; knop.classList.add('gekopieerd');
-    setTimeout(()=>{knop.textContent=orig;knop.classList.remove('gekopieerd');},2000);
-  });
-}
-
-function haalGetalUit(t){const m=t.match(/\d+([.,]\d+)?/);return m?parseFloat(m[0].replace(',','.')):null;}
-function haalEenheidUit(t){return t.replace(/\d+([.,]\d+)?/,'').trim();}
-function formaatGetal(g){
-  const gh=Math.floor(g),rest=g-gh;
-  const br={'0.25':'1/4','0.33':'1/3','0.5':'1/2','0.67':'2/3','0.75':'3/4'};
-  const sym={'0.25':'&#188;','0.33':'&#8531;','0.5':'&#189;','0.67':'&#8532;','0.75':'&#190;'};
-  let bt='';
-  for(const [w,s] of Object.entries(br)){if(Math.abs(rest-parseFloat(w))<0.08){bt=sym[w];break;}}
-  if(gh===0) return bt||g.toFixed(1);
-  return bt?`${gh}${bt}`:(Number.isInteger(g)?String(g):g.toFixed(1));
-}
-function herbereken(hp,bp,bi){
-  const f=hp/bp;
-  document.querySelectorAll('.hoeveelheid[data-basis]').forEach((el,i)=>{
-    const basis=bi[i].hoeveelheid,getal=haalGetalUit(basis);
-    if(getal!==null){const e=haalEenheidUit(basis);el.textContent=formaatGetal(getal*f)+(e?' '+e:'');}
-  });
-  document.getElementById('portie-display').textContent=hp;
-}
-
-let huidigPorties=2,basisPorties=2,huidigReceptIngredienten=[];
-function wijzigPorties(delta){
-  const n=huidigPorties+delta;
-  if(n<1||n>20) return;
-  huidigPorties=n;
-  herbereken(huidigPorties,basisPorties,huidigReceptIngredienten);
-  document.getElementById('knop-min').style.opacity=n<=1?'0.3':'1';
-  document.getElementById('knop-plus').style.opacity=n>=20?'0.3':'1';
-}
-
-function toonRecept(id){
-  const r=RECEPTEN.find(x=>x.id===id); if(!r) return;
-  const bg=r.basisPorties||2;
-  huidigPorties=bg; basisPorties=bg; huidigReceptIngredienten=r.ingredienten;
-  const ingHTML=r.ingredienten.map((i,idx)=>`<li><span>${i.naam}</span><span class="hoeveelheid" data-basis="${idx}">${i.hoeveelheid}</span></li>`).join('');
-  const rNaam=r.naam.replace(/'/g,"\\'");
-  document.getElementById('recept-detail-inhoud').innerHTML=`
-    <div class="recept-hero">
-      <div class="foto-placeholder" style="position:absolute;inset:0;min-height:unset;height:100%;"><span style="font-size:4rem;opacity:0.25;">&#127869;</span></div>
-      <div class="recept-hero-overlay"></div>
-      <div class="recept-hero-inhoud">
-        <div class="recept-hero-categorie">${r.categorie} &middot; ${r.seizoen}</div>
-        <h1 class="recept-hero-titel">${r.naam}</h1>
-        <div class="ster-rij" style="margin-bottom:0.75rem;">${sterrenHTML(r.sterren)}</div>
-        <div class="recept-hero-meta"><span>&#9201; ${r.bereidingstijd}</span><span>&#128101; ${r.porties}</span><span>&#128202; ${r.moeilijkheid}</span></div>
-      </div>
-    </div>
-    <div class="deel-sectie">
-      <span class="deel-label">Delen:</span>
-      <div class="deel-knoppen">
-        <button class="deel-knop" onclick="deelWhatsApp('${rNaam}')">&#128172; WhatsApp</button>
-        <button class="deel-knop" onclick="deelFacebook()">&#128216; Facebook</button>
-        <button class="deel-knop" onclick="kopieerLink(this)">&#128279; Kopieer link</button>
-      </div>
-    </div>
-    <div class="recept-inhoud">
-      <div class="ingredienten-blok">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(201,168,76,0.3);">
-          <h3 style="margin:0;border:none;padding:0;">Ingredi&euml;nten</h3>
-          <div class="portie-regeling">
-            <button class="portie-knop" id="knop-min" onclick="wijzigPorties(-1)">&minus;</button>
-            <div class="portie-midden"><span class="portie-label">personen</span><span class="portie-getal" id="portie-display">${bg}</span></div>
-            <button class="portie-knop" id="knop-plus" onclick="wijzigPorties(1)">+</button>
-          </div>
-        </div>
-        <ul class="ingredienten-list">${ingHTML}</ul>
-      </div>
-      <div class="stappen-blok">
-        <h3>Bereidingswijze</h3>
-        ${r.stappen.map((s,i)=>`<div class="stap"><div class="stap-nummer">${String(i+1).padStart(2,'0')}</div><div class="stap-tekst">${s}</div></div>`).join('')}
-      </div>
-    </div>`;
-  toonPagina('recept');
-}
-
-function inschrijving(knop,okId){
-  knop.textContent='&#10003;'; knop.style.background='var(--groen-licht)';
-  if(okId){const ok=document.getElementById(okId);if(ok)ok.style.display='block';}
-}
-
-renderHomeRecepten();
-
-function maakKaartHTML(r) {
-  return `<div class="recept-kaart" onclick="toonRecept(${r.id})">
-    <div class="foto-wrapper"><div class="foto-placeholder" style="min-height:220px;"><span style="font-size:2rem;opacity:0.3;">🍽</span><span style="font-size:0.7rem;opacity:0.4;">${r.naam}</span></div></div>
-    <div class="recept-kaart-info">
-      <div class="recept-categorie">${r.categorie}</div>
-      <div class="recept-naam">${r.naam}</div>
-      <div class="recept-beschrijving">${r.beschrijving}</div>
-      <div class="recept-meta"><span>⏱ ${r.bereidingstijd}</span><span>👥 ${r.porties}</span><span>📊 ${r.moeilijkheid}</span></div>
-    </div></div>`;
-}
-
-function renderHomeRecepten() {
-  const g = document.getElementById('home-recepten-grid');
-  if (g) g.innerHTML = RECEPTEN.slice(0, 3).map(maakKaartHTML).join('');
-}
-
-function renderReceptenGrid() {
-  const zoek = (document.getElementById('zoek-input')?.value || '').toLowerCase();
-  const g = document.getElementById('recepten-groot-grid');
-  if (!g) return;
-  const lijst = RECEPTEN.filter(r => {
-    const cat = huidigFilter === 'Alles' || r.categorie === huidigFilter;
-    const q = !zoek || r.naam.toLowerCase().includes(zoek) || r.beschrijving.toLowerCase().includes(zoek) || r.ingredienten.some(i => i.naam.toLowerCase().includes(zoek));
-    return cat && q;
-  });
-  g.innerHTML = lijst.length ? lijst.map(maakKaartHTML).join('') : '<div class="geen-resultaten">Geen recepten gevonden 🔍</div>';
-}
-
-function setFilter(f, knop) {
-  huidigFilter = f;
+function setFilter(waarde, knop) {
+  huidigFilter = waarde;
   document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('actief'));
+  knop.classList.add('actief');
+  renderReceptenGrid();
+}
+
+function setSeizoen(waarde, knop) {
+  huidigSeizoen = waarde;
+  document.querySelectorAll('.seizoen-tab').forEach(t => t.classList.remove('actief'));
   knop.classList.add('actief');
   renderReceptenGrid();
 }
@@ -994,127 +930,160 @@ function setFilter(f, knop) {
 function filterRecepten() { renderReceptenGrid(); }
 
 function filterEnGa(categorie) {
-  huidigFilter = categorie;
+  huidigFilter  = categorie;
+  huidigSeizoen = 'Alle seizoenen';
   toonPagina('recepten');
   setTimeout(() => {
-    document.querySelectorAll('.filter-tab').forEach(t => t.classList.toggle('actief', t.textContent.trim() === categorie));
+    document.querySelectorAll('.filter-tab').forEach(t =>
+      t.classList.toggle('actief', t.textContent.trim() === categorie)
+    );
+    document.querySelectorAll('.seizoen-tab').forEach((t, i) =>
+      t.classList.toggle('actief', i === 0)
+    );
     renderReceptenGrid();
   }, 50);
 }
 
-// ─── PORTIE SYSTEEM ───────────────────────────────────────────
-// Haalt het getal uit een hoeveelheid-string, bv. "200g" → 200
-function haalGetalUit(tekst) {
-  const match = tekst.match(/[\d]+([.,]\d+)?/);
-  return match ? parseFloat(match[0].replace(',', '.')) : null;
+// ═══════════════════════════════════════════════════════════════
+// DEEL KNOPPEN
+// ═══════════════════════════════════════════════════════════════
+function deelWhatsApp(naam) {
+  const url   = encodeURIComponent(window.location.href);
+  const tekst = encodeURIComponent('Kijk eens naar dit recept: ' + naam + ' ');
+  window.open('https://wa.me/?text=' + tekst + url, '_blank');
 }
 
-// Haalt de eenheid uit een hoeveelheid-string, bv. "200g" → "g"
-function haalEenheidUit(tekst) {
-  return tekst.replace(/[\d]+([.,]\d+)?/, '').trim();
+function deelFacebook() {
+  window.open(
+    'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href),
+    '_blank'
+  );
 }
 
-// Maakt van een getal een nette string: 1.5 → "1½", 0.25 → "¼" etc.
-function formaatGetal(getal) {
-  const geheel = Math.floor(getal);
-  const rest = getal - geheel;
-  const breuken = { 0.25: '¼', 0.33: '⅓', 0.5: '½', 0.67: '⅔', 0.75: '¾' };
-  // Zoek dichtstbijzijnde breuk
-  let breukTekst = '';
-  for (const [waarde, symbool] of Object.entries(breuken)) {
-    if (Math.abs(rest - parseFloat(waarde)) < 0.08) { breukTekst = symbool; break; }
-  }
-  if (geheel === 0) return breukTekst || getal.toFixed(1);
-  return breukTekst ? `${geheel}${breukTekst}` : (Number.isInteger(getal) ? String(getal) : getal.toFixed(1));
+function kopieerLink(knop) {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const origineel = knop.textContent;
+    knop.textContent = '&#10003; Gekopieerd!';
+    knop.classList.add('gekopieerd');
+    setTimeout(() => {
+      knop.textContent = origineel;
+      knop.classList.remove('gekopieerd');
+    }, 2000);
+  });
 }
 
-// Herberekent alle hoeveelheden op basis van nieuw portieaantal
-function herbereken(huidigPorties, basisPorties, basisIngredienten) {
+// ═══════════════════════════════════════════════════════════════
+// PORTIE SYSTEEM
+// ═══════════════════════════════════════════════════════════════
+function herbereken() {
   const factor = huidigPorties / basisPorties;
   document.querySelectorAll('.hoeveelheid[data-basis]').forEach((el, index) => {
-    const basis = basisIngredienten[index].hoeveelheid;
-    const getal = haalGetalUit(basis);
+    const basisTekst = huidigReceptIngredienten[index].hoeveelheid;
+    const getal = haalGetalUit(basisTekst);
     if (getal !== null) {
-      const eenheid = haalEenheidUit(basis);
-      const nieuw = getal * factor;
-      el.textContent = formaatGetal(nieuw) + (eenheid ? ' ' + eenheid : '');
+      const eenheid = haalEenheidUit(basisTekst);
+      el.textContent = formaatGetal(getal * factor) + (eenheid ? ' ' + eenheid : '');
     }
-    // Woorden zoals "royaal", "naar smaak" blijven ongewijzigd
   });
   document.getElementById('portie-display').textContent = huidigPorties;
 }
 
-let huidigPorties = 2; // wordt gezet bij openen recept
-let basisPorties  = 2;
-let huidigReceptIngredienten = [];
-
 function wijzigPorties(delta) {
-  const nieuw = huidigPorties + delta;
-  if (nieuw < 1 || nieuw > 20) return;
-  huidigPorties = nieuw;
-  herbereken(huidigPorties, basisPorties, huidigReceptIngredienten);
-  // Knoppen grijs maken aan de grenzen
-  document.getElementById('knop-min').style.opacity = huidigPorties <= 1 ? '0.3' : '1';
+  const nieuwAantal = huidigPorties + delta;
+  if (nieuwAantal < 1 || nieuwAantal > 20) return;
+  huidigPorties = nieuwAantal;
+  herbereken();
+  document.getElementById('knop-min').style.opacity  = huidigPorties <= 1  ? '0.3' : '1';
   document.getElementById('knop-plus').style.opacity = huidigPorties >= 20 ? '0.3' : '1';
 }
 
+// ═══════════════════════════════════════════════════════════════
+// RECEPT DETAIL PAGINA
+// ═══════════════════════════════════════════════════════════════
 function toonRecept(id) {
-  const r = RECEPTEN.find(x => x.id === id);
-  if (!r) return;
+  const recept = RECEPTEN.find(x => x.id === id);
+  if (!recept) return;
 
-  // Stel portie-staat in
-  const basisGetal = parseInt(r.porties) || 2;
-  huidigPorties = basisGetal;
-  basisPorties  = basisGetal;
-  huidigReceptIngredienten = r.ingredienten;
+  huidigPorties            = recept.basisPorties || 2;
+  basisPorties             = recept.basisPorties || 2;
+  huidigReceptIngredienten = recept.ingredienten;
 
-  // Bouw ingrediënten HTML met data-basis attribuut voor herberekening
-  const ingredientenHTML = r.ingredienten.map((i, idx) =>
-    `<li><span>${i.naam}</span><span class="hoeveelheid" data-basis="${idx}">${i.hoeveelheid}</span></li>`
+  const ingHTML = recept.ingredienten.map((ing, idx) =>
+    `<li><span>${ing.naam}</span><span class="hoeveelheid" data-basis="${idx}">${ing.hoeveelheid}</span></li>`
   ).join('');
+
+  const veiligNaam = recept.naam.replace(/'/g, "\\'");
 
   document.getElementById('recept-detail-inhoud').innerHTML = `
     <div class="recept-hero">
-      <div class="foto-placeholder" style="position:absolute;inset:0;min-height:unset;height:100%;"><span style="font-size:4rem;opacity:0.25;">🍽</span></div>
+      <div class="foto-placeholder" style="position:absolute;inset:0;min-height:unset;height:100%;">
+        <span style="font-size:4rem;opacity:0.25;">&#127869;</span>
+      </div>
       <div class="recept-hero-overlay"></div>
       <div class="recept-hero-inhoud">
-        <div class="recept-hero-categorie">${r.categorie}</div>
-        <h1 class="recept-hero-titel">${r.naam}</h1>
-        <div class="recept-hero-meta"><span>⏱ ${r.bereidingstijd}</span><span>👥 ${r.porties}</span><span>📊 ${r.moeilijkheid}</span></div>
+        <div class="recept-hero-categorie">${recept.categorie} &middot; ${recept.seizoen}</div>
+        <h1 class="recept-hero-titel">${recept.naam}</h1>
+        <div class="ster-rij" style="margin-bottom:0.75rem;">${sterrenHTML(recept.sterren)}</div>
+        <div class="recept-hero-meta">
+          <span>&#9201; ${recept.bereidingstijd}</span>
+          <span>&#128101; ${recept.porties}</span>
+          <span>&#128202; ${recept.moeilijkheid}</span>
+        </div>
+      </div>
+    </div>
+    <div class="deel-sectie">
+      <span class="deel-label">Delen:</span>
+      <div class="deel-knoppen">
+        <button class="deel-knop" onclick="deelWhatsApp('${veiligNaam}')">&#128172; WhatsApp</button>
+        <button class="deel-knop" onclick="deelFacebook()">&#128216; Facebook</button>
+        <button class="deel-knop" onclick="kopieerLink(this)">&#128279; Kopieer link</button>
       </div>
     </div>
     <div class="recept-inhoud">
       <div class="ingredienten-blok">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; padding-bottom:0.75rem; border-bottom:1px solid rgba(201,168,76,0.3);">
-          <h3 style="margin:0; border:none; padding:0;">Ingrediënten</h3>
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    margin-bottom:1.5rem;padding-bottom:0.75rem;
+                    border-bottom:1px solid rgba(201,168,76,0.3);">
+          <h3 style="margin:0;border:none;padding:0;">Ingredi&euml;nten</h3>
           <div class="portie-regeling">
-            <button class="portie-knop" id="knop-min" onclick="wijzigPorties(-1)">−</button>
+            <button class="portie-knop" id="knop-min"  onclick="wijzigPorties(-1)">&minus;</button>
             <div class="portie-midden">
               <span class="portie-label">personen</span>
-              <span class="portie-getal" id="portie-display">${basisGetal}</span>
+              <span class="portie-getal" id="portie-display">${huidigPorties}</span>
             </div>
             <button class="portie-knop" id="knop-plus" onclick="wijzigPorties(1)">+</button>
           </div>
         </div>
-        <ul class="ingredienten-list">${ingredientenHTML}</ul>
+        <ul class="ingredienten-list">${ingHTML}</ul>
       </div>
       <div class="stappen-blok">
         <h3>Bereidingswijze</h3>
-        ${r.stappen.map((s,i)=>`<div class="stap"><div class="stap-nummer">${String(i+1).padStart(2,'0')}</div><div class="stap-tekst">${s}</div></div>`).join('')}
+        ${recept.stappen.map((stap, i) => `
+          <div class="stap">
+            <div class="stap-nummer">${String(i + 1).padStart(2, '0')}</div>
+            <div class="stap-tekst">${stap}</div>
+          </div>`).join('')}
       </div>
     </div>`;
+
   toonPagina('recept');
 }
 
+// ═══════════════════════════════════════════════════════════════
+// WACHTLIJST FORMULIER
+// ═══════════════════════════════════════════════════════════════
 function inschrijving(knop, okId) {
-  knop.textContent = '✓';
+  knop.textContent    = '&#10003;';
   knop.style.background = 'var(--groen-licht)';
   if (okId) {
-    const ok = document.getElementById(okId);
-    if (ok) ok.style.display = 'block';
+    const bevestiging = document.getElementById(okId);
+    if (bevestiging) bevestiging.style.display = 'block';
   }
 }
 
+// ═══════════════════════════════════════════════════════════════
+// START
+// ═══════════════════════════════════════════════════════════════
 renderHomeRecepten();
 </script>
 </body>
