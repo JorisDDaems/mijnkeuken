@@ -395,10 +395,8 @@
       </div>
     </div>
     <div style="position:relative;overflow:hidden;">
-      <div class="foto-placeholder" style="min-height:100vh;">
-        <span style="font-size:3rem;opacity:0.3;">🍽</span>
-        <span style="font-size:0.8rem;opacity:0.4;letter-spacing:0.15em;">Voeg hier jouw foto toe</span>
-      </div>
+      <img src="/foodfotos/blonde woman kitchen.png" alt="In de keuken"
+           style="width:100%;height:100%;min-height:100vh;object-fit:cover;display:block;">
     </div>
   </section>
 
@@ -761,36 +759,56 @@
 // sterren: 1 t.e.m. 5
 // ═══════════════════════════════════════════════════════════════
 const RECEPTEN = [
-  {id:1,naam:"Pasta Carbonara",categorie:"Pasta",seizoen:"Winter",sterren:5,
+  {id:1,naam:"Pasta Carbonara",categorie:"Pasta",seizoen:"Winter",sterren:5,foto:null,
    beschrijving:"De klassieke Romeinse pasta — romig, hartig en klaar in 20 minuten. Geen room, wél veel liefde.",
    bereidingstijd:"20 min",porties:"2 personen",basisPorties:2,moeilijkheid:"Makkelijk",
    ingredienten:[{naam:"Spaghetti",hoeveelheid:"200g"},{naam:"Pancetta of spek",hoeveelheid:"100g"},{naam:"Eieren (heel)",hoeveelheid:"2"},{naam:"Eidooiers",hoeveelheid:"2"},{naam:"Pecorino Romano",hoeveelheid:"60g"},{naam:"Zwarte peper",hoeveelheid:"royaal"},{naam:"Zout",hoeveelheid:"1 el"}],
    stappen:["Breng een grote pan gezouten water aan de kook. Kook de spaghetti 1 minuut korter dan de verpakking aangeeft.","Bak de pancetta zonder olie op middelhoog vuur tot knapperig en goudbruin. Zet het vuur laag.","Klop in een kom de eieren, eidooiers en geraspte pecorino. Voeg royaal zwarte peper toe.","Schep de spaghetti rechtstreeks uit het kookwater in de pan bij de pancetta. Laat wat kookwater mee.","Haal de pan volledig van het vuur. Voeg het eimengsel toe en roer snel. Voeg scheutjes kookwater toe tot je een zijdezachte saus krijgt.","Serveer direct met extra pecorino en peper."]},
-  {id:2,naam:"Tomatensoep met Gegrild Brood",categorie:"Comfort Food",seizoen:"Herfst",sterren:5,
+  {id:2,naam:"Tomatensoep met Gegrild Brood",categorie:"Comfort Food",seizoen:"Herfst",sterren:5,foto:null,
    beschrijving:"Thuisgemaakt, vol van smaak en troostend als een warme deken. Perfect voor een koude avond.",
    bereidingstijd:"35 min",porties:"4 personen",basisPorties:4,moeilijkheid:"Makkelijk",
    ingredienten:[{naam:"Gepelde tomaten (blik)",hoeveelheid:"2 blikken"},{naam:"Ui",hoeveelheid:"1 grote"},{naam:"Knoflook",hoeveelheid:"3 teentjes"},{naam:"Groentebouillon",hoeveelheid:"500ml"},{naam:"Olijfolie",hoeveelheid:"3 el"},{naam:"Verse basilicum",hoeveelheid:"handvol"},{naam:"Zuurdesembrood",hoeveelheid:"4 sneden"}],
    stappen:["Snipper de ui fijn. Fruit op middelhoog vuur in olijfolie tot glazig (5 min).","Voeg knoflook toe, bak 1 minuut mee.","Voeg tomaten en bouillon toe. Laat 20 minuten zacht koken.","Voeg basilicum toe en blend de soep glad.","Grill het brood tot knapperig en goudbruin.","Serveer de soep met gegrild brood en een scheut olijfolie."]},
-  {id:3,naam:"Roerbak Noedels met Groenten",categorie:"Snel & Makkelijk",seizoen:"Alle seizoenen",sterren:4,
+  {id:3,naam:"Roerbak Noedels met Groenten",categorie:"Snel & Makkelijk",seizoen:"Alle seizoenen",sterren:4,foto:"/foodfotos/shrimp fried rice.png",
    beschrijving:"Van aansnijden tot serveren in 15 minuten. Kleurrijk, krokant en vol umami-smaak.",
    bereidingstijd:"15 min",porties:"2 personen",basisPorties:2,moeilijkheid:"Makkelijk",
    ingredienten:[{naam:"Eiernoedels",hoeveelheid:"200g"},{naam:"Paksoi",hoeveelheid:"1 stuk"},{naam:"Paprika (rood)",hoeveelheid:"1"},{naam:"Wortelen",hoeveelheid:"2"},{naam:"Sojasaus",hoeveelheid:"3 el"},{naam:"Sesamolie",hoeveelheid:"1 el"},{naam:"Knoflook",hoeveelheid:"2 teentjes"}],
    stappen:["Kook de noedels (3-4 min). Afgieten en spoelen met koud water.","Verhit een wok op hoog vuur. Voeg olie toe.","Bak knoflook 30 sec. Voeg wortel en paprika toe, roerbak 2-3 min.","Voeg paksoi toe, roerbak 1 min.","Voeg noedels, sojasaus en sesamolie toe. Meng goed op hoog vuur.","Serveer met sesamzaadjes."]},
-  {id:4,naam:"Pasta Pesto met Gegrilde Groenten",categorie:"Vegetarisch",seizoen:"Zomer",sterren:5,
+  {id:4,naam:"Pasta Pesto met Gegrilde Groenten",categorie:"Vegetarisch",seizoen:"Zomer",sterren:5,foto:null,
    beschrijving:"Frisse zelfgemaakte pesto met gegrilde courgette en cherrytomaatjes — het proeft naar zomer.",
    bereidingstijd:"25 min",porties:"3 personen",basisPorties:3,moeilijkheid:"Makkelijk",
    ingredienten:[{naam:"Pasta (trofie of fusilli)",hoeveelheid:"300g"},{naam:"Verse basilicum",hoeveelheid:"60g"},{naam:"Pijnboompitten",hoeveelheid:"30g"},{naam:"Parmezaanse kaas",hoeveelheid:"50g"},{naam:"Courgette",hoeveelheid:"1"},{naam:"Cherrytomaatjes",hoeveelheid:"150g"},{naam:"Olijfolie",hoeveelheid:"80ml"}],
    stappen:["Rooster pijnboompitten droog tot goudbruin.","Blend basilicum, pijnboompitten, knoflook en parmezaan. Voeg olijfolie toe.","Snijd courgette in plakken. Grill tot grillstrepen zichtbaar zijn.","Halveer tomaatjes en voeg toe aan de grillpan voor 1 min.","Kook pasta. Bewaar een kopje kookwater.","Meng pasta met pesto en kookwater. Verdeel groenten erbovenop."]},
-  {id:5,naam:"Linzensoep met Citroen",categorie:"Vegetarisch",seizoen:"Winter",sterren:4,
+  {id:5,naam:"Linzensoep met Citroen",categorie:"Vegetarisch",seizoen:"Winter",sterren:4,foto:"/foodfotos/thai coconut soup.png",
    beschrijving:"Hartverwarmend, vullend en boordevol smaak. De dag erna nog lekkerder.",
    bereidingstijd:"40 min",porties:"4 personen",basisPorties:4,moeilijkheid:"Makkelijk",
    ingredienten:[{naam:"Rode linzen",hoeveelheid:"250g"},{naam:"Ui",hoeveelheid:"1 grote"},{naam:"Wortel",hoeveelheid:"2"},{naam:"Groentebouillon",hoeveelheid:"1 liter"},{naam:"Komijn",hoeveelheid:"1 tl"},{naam:"Kurkuma",hoeveelheid:"½ tl"},{naam:"Citroen",hoeveelheid:"1"}],
    stappen:["Fruit ui en wortel in olijfolie (5 min).","Voeg knoflook, komijn en kurkuma toe. Bak 1 minuut.","Voeg linzen en bouillon toe. Kook 25 minuten.","Blend de helft voor een romige structuur.","Roer citroensap erdoor. Breng op smaak.","Serveer met verse koriander en olijfolie."]},
-  {id:6,naam:"Snelle Shakshuka",categorie:"Snel & Makkelijk",seizoen:"Lente",sterren:5,
+  {id:6,naam:"Snelle Shakshuka",categorie:"Snel & Makkelijk",seizoen:"Lente",sterren:5,foto:null,
    beschrijving:"Eieren gepocheerd in een pittige tomatensaus — perfect voor brunch of een snelle avondmaaltijd.",
    bereidingstijd:"20 min",porties:"2 personen",basisPorties:2,moeilijkheid:"Makkelijk",
    ingredienten:[{naam:"Eieren",hoeveelheid:"4"},{naam:"Gepelde tomaten (blik)",hoeveelheid:"1 blik"},{naam:"Rode paprika",hoeveelheid:"1"},{naam:"Ui",hoeveelheid:"1"},{naam:"Harissa",hoeveelheid:"1 tl"},{naam:"Feta",hoeveelheid:"50g"},{naam:"Peterselie",hoeveelheid:"handvol"}],
-   stappen:["Fruit ui en paprika in olijfolie (5 min).","Voeg knoflook, komijn en harissa toe. Voeg tomaten toe en laat 8 min sudderen.","Maak 4 kuiltjes. Breek een ei in elk kuiltje.","Deksel op de pan. Pocheer 3-4 min voor vloeibare dooier.","Bestrooi met feta en peterselie. Serveer met brood."]}
+   stappen:["Fruit ui en paprika in olijfolie (5 min).","Voeg knoflook, komijn en harissa toe. Voeg tomaten toe en laat 8 min sudderen.","Maak 4 kuiltjes. Breek een ei in elk kuiltje.","Deksel op de pan. Pocheer 3-4 min voor vloeibare dooier.","Bestrooi met feta en peterselie. Serveer met brood."]},
+  {id:7,naam:"Ravioli met Salie-Botersaus",categorie:"Pasta",seizoen:"Herfst",sterren:5,foto:"/foodfotos/ravioli with sali butter sauce.png",
+   beschrijving:"Zijdezachte ravioli gedrenkt in goudbruine boter met knapperige salie — eenvoudig maar onweerstaanbaar elegant.",
+   bereidingstijd:"20 min",porties:"2 personen",basisPorties:2,moeilijkheid:"Makkelijk",
+   ingredienten:[{naam:"Verse ravioli (ricotta of spinazie)",hoeveelheid:"300g"},{naam:"Boter",hoeveelheid:"80g"},{naam:"Verse salie",hoeveelheid:"12 blaadjes"},{naam:"Parmezaanse kaas",hoeveelheid:"40g"},{naam:"Knoflook",hoeveelheid:"1 teentje"},{naam:"Zwarte peper",hoeveelheid:"naar smaak"},{naam:"Zout",hoeveelheid:"naar smaak"}],
+   stappen:["Kook de ravioli volgens de verpakking. Bewaar een kopje kookwater.","Smelt boter op middelhoog vuur in een brede pan tot lichtbruin en nootachtig ruikend.","Voeg salie en knoflook toe. Bak 1-2 min tot de salie knapperig is.","Voeg ravioli toe met een scheutje kookwater. Schep voorzichtig om.","Serveer met geraspte parmezaan en zwarte peper."]},
+  {id:8,naam:"Steak met Frietjes",categorie:"Comfort Food",seizoen:"Alle seizoenen",sterren:5,foto:"/foodfotos/steak with fries.png",
+   beschrijving:"Een perfect gebakken steak met krokante frietjes — de klassieker die nooit verveelt. Steakhouse-kwaliteit thuis.",
+   bereidingstijd:"35 min",porties:"2 personen",basisPorties:2,moeilijkheid:"Gemiddeld",
+   ingredienten:[{naam:"Ribeye of entrecote",hoeveelheid:"2 stuks (200g elk)"},{naam:"Frietjes (diepvries of zelfgemaakt)",hoeveelheid:"400g"},{naam:"Boter",hoeveelheid:"30g"},{naam:"Knoflook",hoeveelheid:"2 teentjes"},{naam:"Verse tijm",hoeveelheid:"3 takjes"},{naam:"Olijfolie",hoeveelheid:"2 el"},{naam:"Zout & peper",hoeveelheid:"royaal"}],
+   stappen:["Haal de steak 30 min voor het bakken uit de koelkast. Dep droog en kruid royaal met zout en peper.","Bak of frituur de frietjes volgens de verpakking tot goudbruin en krokant.","Verhit een gietijzeren pan gloeiend heet. Voeg olie toe.","Bak de steak 2-3 min per kant voor medium-rare. Voeg boter, knoflook en tijm toe en lepel over het vlees.","Laat 5 min rusten onder aluminiumfolie. Snijd schuin en serveer met frietjes."]},
+  {id:9,naam:"Zelfgebakken Focaccia",categorie:"Comfort Food",seizoen:"Alle seizoenen",sterren:5,foto:"/foodfotos/focaccia.png",
+   beschrijving:"Luchtig, knapperig en doordrenkt met olijfolie en zeezout. Zelfgebakken focaccia is makkelijker dan je denkt.",
+   bereidingstijd:"45 min + 2u rijzen",porties:"8 personen",basisPorties:8,moeilijkheid:"Gemiddeld",
+   ingredienten:[{naam:"Bloem (type 00 of patentbloem)",hoeveelheid:"500g"},{naam:"Droge gist",hoeveelheid:"7g"},{naam:"Warm water",hoeveelheid:"380ml"},{naam:"Olijfolie (extra vierge)",hoeveelheid:"80ml"},{naam:"Grof zeezout",hoeveelheid:"2 tl"},{naam:"Rozemarijn",hoeveelheid:"3 takjes"},{naam:"Suiker",hoeveelheid:"1 tl"}],
+   stappen:["Meng gist en suiker met warm water. Laat 10 min staan tot het schuimt.","Meng bloem met zout. Voeg gistmengsel en 40ml olijfolie toe. Kneed 8-10 min tot soepel deeg.","Laat 1,5 uur rijzen op een warme plek tot verdubbeld in volume.","Vet een bakplaat in met olijfolie. Druk het deeg uit. Laat nog 30 min rijzen.","Druk met je vingers diepe kuiltjes in het deeg. Giet resterende olijfolie erover. Bestrooi met zeezout en rozemarijn.","Bak 20-25 min op 220°C tot goudbruin en knapperig."]},
+  {id:10,naam:"Brownies met Chocolade",categorie:"Comfort Food",seizoen:"Alle seizoenen",sterren:5,foto:"/foodfotos/brownie stacked.png",
+   beschrijving:"Smeuïge, intense chocoladebrownies met een knapperige bovenkant. Het ultieme chocoladedessert voor echte liefhebbers.",
+   bereidingstijd:"40 min",porties:"12 stuks",basisPorties:12,moeilijkheid:"Makkelijk",
+   ingredienten:[{naam:"Pure chocolade (70%)",hoeveelheid:"200g"},{naam:"Boter",hoeveelheid:"150g"},{naam:"Eieren",hoeveelheid:"3"},{naam:"Suiker",hoeveelheid:"200g"},{naam:"Bloem",hoeveelheid:"80g"},{naam:"Cacaopoeder",hoeveelheid:"2 el"},{naam:"Snufje zout",hoeveelheid:"1"}],
+   stappen:["Verwarm de oven voor op 180°C. Bekleed een vierkante bakvorm (20x20cm) met bakpapier.","Smelt chocolade en boter au bain-marie. Laat licht afkoelen.","Klop eieren en suiker luchtig met een mixer (5 min) tot het mengsel verbleekt.","Spatel het chocolademengsel door het eimengsel.","Zeef bloem, cacao en zout erboven. Spatel voorzichtig tot net gemengd.","Giet in de vorm. Bak 22-25 min. De bovenkant moet droog zijn, maar het midden nog licht wiebelen.","Laat volledig afkoelen voor je snijdt — dit is het moeilijkste deel!"]}
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -869,13 +887,14 @@ function toonPagina(naam) {
 // RECEPTEN GRID
 // ═══════════════════════════════════════════════════════════════
 function maakKaartHTML(r) {
-  return `<div class="recept-kaart" onclick="toonRecept(${r.id})">
-    <div class="foto-wrapper">
-      <div class="foto-placeholder" style="min-height:220px;">
+  const fotoHTML = r.foto
+    ? `<img src="${r.foto}" alt="${r.naam}" style="width:100%;height:100%;object-fit:cover;display:block;">`
+    : `<div class="foto-placeholder" style="min-height:220px;">
         <span style="font-size:2rem;opacity:0.3;">&#127869;</span>
         <span style="font-size:0.7rem;opacity:0.4;">${r.naam}</span>
-      </div>
-    </div>
+       </div>`;
+  return `<div class="recept-kaart" onclick="toonRecept(${r.id})">
+    <div class="foto-wrapper">${fotoHTML}</div>
     <div class="recept-kaart-info">
       <div class="recept-categorie">${r.categorie} &middot; ${r.seizoen}</div>
       <div class="ster-rij">${sterrenHTML(r.sterren)}</div>
@@ -1016,9 +1035,10 @@ function toonRecept(id) {
 
   document.getElementById('recept-detail-inhoud').innerHTML = `
     <div class="recept-hero">
-      <div class="foto-placeholder" style="position:absolute;inset:0;min-height:unset;height:100%;">
-        <span style="font-size:4rem;opacity:0.25;">&#127869;</span>
-      </div>
+      ${recept.foto
+        ? `<img src="${recept.foto}" alt="${recept.naam}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">`
+        : `<div class="foto-placeholder" style="position:absolute;inset:0;min-height:unset;height:100%;"><span style="font-size:4rem;opacity:0.25;">&#127869;</span></div>`
+      }
       <div class="recept-hero-overlay"></div>
       <div class="recept-hero-inhoud">
         <div class="recept-hero-categorie">${recept.categorie} &middot; ${recept.seizoen}</div>
